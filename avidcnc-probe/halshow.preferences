@@ -1,0 +1,36 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 647x902+816+31
+placeFrames 0.42568807339449544
+set ::ratio 0.42568807339449544
+set ::old_w_leftf 160
+set ::watchlist {
+    pin+joint.0.amp-fault-in
+    pin+joint.1.amp-fault-in
+    pin+joint.2.amp-fault-in
+    pin+joint.3.amp-fault-in
+    sig+machine-is-enabled
+    pin+timedelay.0.in
+    pin+timedelay.0.out
+    pin+timedelay.0.time
+    pin+a-servo-hlfb
+    pin+x-servo-hlfb
+    pin+y-servo-hlfb
+    pin+y2-servo-hlfb
+    pin+z-servo-hlfb
+    pin+x-hlfb-and2.in0
+    pin+x-hlfb-and2.in1
+    pin+x-hlfb-and2.out
+    pin+x-hlfb-and2.time
+    pin+z-hlfb-and2.in0
+    pin+z-hlfb-and2.in1
+    pin+z-hlfb-and2.out
+    pin+z-hlfb-and2.time
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 1
+set ::autoSaveWatchlist 1

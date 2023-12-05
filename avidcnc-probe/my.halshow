@@ -1,0 +1,1 @@
+pin+motion.motion-enabled sig+a-hlfb-in sig+on-hlfb-in sig+x-hlfb-in sig+y1-hlfb-in sig+y2-hlfb-in sig+z-hlfb-in sig+machine-is-on sig+machine-is-enabled pin+and2.0.in0 pin+and2.0.in1 pin+and2.0.out pin+and2.0.time pin+timedelay.0.in pin+timedelay.0.off-delay pin+timedelay.0.on-delay pin+timedelay.0.out pin+timedelay.0.time
