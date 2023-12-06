@@ -1,10 +1,9 @@
 o<m300> sub
-
- (debug, in sub)
+ M73
+ G20
  G90
  G53 G0 Z0
- G53 G0 X60 Y123.5
-
+ G53 G0 X#<_ini[AXIS_X]MAX_LIMIT> Y#<_ini[AXIS_Y]MAX_LIMIT_ADJUSTED>
 o<m300> endsub
 
 M2

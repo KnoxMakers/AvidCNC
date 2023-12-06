@@ -58,10 +58,10 @@ MDI_COMMAND=G10 L20 P0 X[#<_x>/2.0]
 MDI_COMMAND=G10 L20 P0 Y[#<_y>/2.0]
 MDI_COMMAND=(debug, example: mdi-06)
 #07 M101: example print to stdout
-MDI_COMMAND=M101 
+MDI_COMMAND=M300 
 MDI_COMMAND=(debug, example: mdi-08)
 MDI_COMMAND=(debug, example: mdi-09)
-MDI_COMMAND=G0 Z14.5
+MDI_COMMAND=(debug, example: mdi-10)
 MDI_COMMAND=(debug, example: mdi-11)
 #12
 MDI_COMMAND= G10 L20 P0 X0

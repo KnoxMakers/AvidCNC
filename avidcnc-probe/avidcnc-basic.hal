@@ -37,11 +37,11 @@ addf y2-hlfb-and2 servo-thread
 addf z-hlfb-and2 servo-thread
 addf a-hlfb-and2 servo-thread
 
-alias pin hm2_7i76e.0.7i76.0.0.input-10-not x-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-11-not y-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-12-not y2-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-13-not z-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-14-not a-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-11-not x-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-12-not y-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-13-not y2-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-14-not z-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-15-not a-servo-hlfb
 
 net x-servo-fault x-servo-hlfb x-hlfb-and2.in0
 net machine-is-enabled  x-hlfb-and2.in1
@@ -140,35 +140,21 @@ net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-04-not
 # estop loopback
 net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
-
-# --- PROBE-IN ---
+# --- TOUCH PROBE-IN (Z-PROBE) ---
 net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-06
 
-# --- TLP-IN ---
+# --- TOOL HEIGHT PROBE ---
 net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07
 
-# --- TCHG-IN ---
-net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-08
+# --- TOOL HEIGHT PROBE OVER TRAVEL ---
+
+net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08
+
+# --- TOOL CHANGE BUTTON IN ---
+net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09
 
 # --- AUX-IN ---
-net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-09
-
-# --- X-HLFB-IN ---
-#net x-hlfb-in     <=  hm2_7i76e.0.7i76.0.0.input-10-not
-#net x-hlfb-in     =>  joint.0.amp-fault-in
-# --- Y1-HLFB-IN ---
-#net y1-hlfb-in     <=  hm2_7i76e.0.7i76.0.0.input-11-not
-#net y1-hlfb-in     =>  joint.1.amp-fault-in
-# --- Y2-HLFB-IN ---
-#net y2-hlfb-in     <=  hm2_7i76e.0.7i76.0.0.input-12-not
-#net y2-hlfb-in     =>  joint.2.amp-fault-in
-# --- Z-HLFB-IN ---
-#net z-hlfb-in     <=  hm2_7i76e.0.7i76.0.0.input-13-not
-#net z-hlfb-in     =>  joint.3.amp-fault-in
-# --- A-HLFB-IN ---
-#net a-hlfb-in     <=  hm2_7i76e.0.7i76.0.0.input-14-not
-#net s-hlfb-in     =>  joint.5.amp-fault-in
-
+net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-10
 
 #*******************
 #  AXIS X JOINT 0
