@@ -1,6 +1,8 @@
 import os
 
 from probe_basic.probe_basic import ProbeBasic
+from qtpyvcp.plugins import getPlugin
+
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -82,3 +84,13 @@ class CustomProbeBasic(ProbeBasic):
         self.holecirclewidget.coolant_input.addItem('VACUUM')
         self.holecirclewidget.coolant_input.addItem('AIR BLAST')
         self.holecirclewidget.coolant_input.addItem('BOTH')
+
+        _file_locations = getPlugin('file_locations')
+        _file_locations.local_locations.pop("Home")
+        _file_locations.local_locations.pop("Desktop")
+        _file_locations.local_locations.pop("NC Files")
+
+        self.removabledevicecombobox.onRemovableDevicesChanged(_file_locations.removable_devices.value)
+        recentfilecombobox_length = len(self.recentfilecombobox_2)
+        self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
+        self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
