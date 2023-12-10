@@ -1,0 +1,4 @@
+#!/bin/bash
+# file to set y limit for normal limit
+halcmd setp ini.y.max_limit 96
+exit 0

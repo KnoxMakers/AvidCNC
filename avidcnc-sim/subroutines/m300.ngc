@@ -1,0 +1,10 @@
+o<m300> sub
+
+ (debug, in sub)
+ G90
+ G53 G0 Z0
+ G53 G0 X60 Y123.5
+
+o<m300> endsub
+
+M2

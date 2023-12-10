@@ -1,0 +1,40 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 860x712+542+61
+placeFrames 0.3
+set ::ratio 0.3
+set ::old_w_leftf 160
+set ::watchlist {
+    pin+motion.analog-in-00
+    pin+motion.analog-out-00
+    pin+motion.motion-enabled
+    pin+motion-controller.time
+    pin+motion-command-handler.time
+    pin+ini.y.max_limit
+    pin+motion.analog-in-07
+    pin+halui.axis.a.analog
+    sig+y-max-limit-adjusted
+    sig+y-max-limit-addition
+    sig+y-neg-lim
+    sig+y-pos
+    pin+sim-encoder.make-pulses.time
+    pin+sim-encoder.update-speed.time
+    pin+sim_encoder_0.phase-A
+    pin+sim_encoder_0.phase-B
+    pin+sim_encoder_0.phase-Z
+    pin+sim_encoder_0.ppr
+    pin+sim_encoder_0.rawcounts
+    pin+sim_encoder_0.scale
+    pin+sim_encoder_0.speed
+    sig+spindle-rpm-filtered
+    pin+scale_to_rpm.gain
+    pin+scale_to_rpm.in
+    pin+scale_to_rpm.out
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 0
+set ::autoSaveWatchlist 1

@@ -1,0 +1,45 @@
+# This is quite a complex HAL file, and it is very unlikely any of it will be relevant to a real machine. 
+# All the HAL functions here are related to making the Vismach model look like a real machine to the other HAL files
+# ie, this creates things like limit switches which would be driven by real hardware on a real machine. 
+
+loadrt mult2 count=3
+
+loadrt wcomp names=xlim,ylim,zlim
+loadrt mux2 names=mux2.0
+loadrt sum2 names=y-atc-offset
+
+addf mult2.0 servo-thread
+addf mult2.1 servo-thread
+addf mult2.2 servo-thread
+
+addf y-atc-offset servo-thread
+
+addf xlim servo-thread
+addf ylim servo-thread
+addf zlim servo-thread 
+
+setp mult2.0.in0 25.4
+setp mult2.1.in0 25.4
+setp mult2.2.in0 25.4
+
+setp xlim.max 60
+setp xlim.min -1
+setp ylim.max 123.5
+setp ylim.min -1
+setp zlim.max .001
+setp zlim.min -14.6
+
+net x-pos-lim xlim.over
+net x-neg-lim xlim.under
+net y-pos-lim ylim.over
+net y-neg-lim ylim.under
+net z-pos-lim zlim.over
+net z-neg-lim zlim.under
+
+
+net x-pos xlim.in mult2.0.in1
+net y-pos ylim.in mult2.1.in1
+net z-pos zlim.in mult2.2.in1
+
+net spindle-fwd spindle.0.forward
+net spindle-rev spindle.0.reverse

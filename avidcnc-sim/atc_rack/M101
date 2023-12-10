@@ -1,0 +1,4 @@
+#!/bin/bash
+# file to set y limit for ATC access
+halcmd setp ini.y.max_limit 123.501
+exit 0
