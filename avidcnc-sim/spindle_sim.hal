@@ -24,7 +24,7 @@ net spindle-phase-B sim_encoder_0.phase-B => encoder_0.phase-B
 net spindle-phase-Z sim_encoder_0.phase-Z => encoder_0.phase-Z
 
 # assume 120 ppr = 480 counts/rev for the spindle
-setp sim_encoder_0.ppr 12
+setp sim_encoder_0.ppr 6
 # iocontrol output is in rpm, but sim-encoder speed is rps
 setp sim_encoder_0.scale 60
 # scale encoder output to read in revolutions
@@ -46,7 +46,7 @@ loadrt scale names=scale_to_rpm,scale.servo
 net spindle-rps-raw encoder_0.velocity lowpass_velocity.in
 net spindle-rps-filtered lowpass_velocity.out scale_to_rpm.in spindle.0.speed-in
 net spindle-rpm-filtered scale_to_rpm.out
-setp scale_to_rpm.gain 30
+setp scale_to_rpm.gain 60
 setp lowpass_velocity.gain .07
 addf lowpass_velocity servo-thread
 addf scale_to_rpm servo-thread
