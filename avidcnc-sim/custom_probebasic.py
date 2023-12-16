@@ -2,12 +2,7 @@ import os
 
 from probe_basic.probe_basic import ProbeBasic
 from qtpyvcp.plugins import getPlugin
-#from qtpy.QtWidgets import QTableView
 from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
-
-#class TableType(object):
-#    Local = 0
-#    Remote = 1
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -100,31 +95,9 @@ class CustomProbeBasic(ProbeBasic):
         self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
         self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
 
-
         self.filesystemtable.atDeviceRoot['bool'].connect(self.main_folder_up_button.setDisabled) # type: ignore
 
-#    def custom_showEvent(self, event=None):
-#        root_path = self.model.rootPath()
-#        #self.rootChanged.emit(root_path)
-#        isroot = os.path.ismount(root_path)
-#        islink = False
-#        if root_path == '/home/avidcnc/linuxcnc/nc_files/USERS':
-#          islink = True
-#        print('ROOT:')
-#        print(root_path)
-#        print(islink)
-#        self.atDeviceRoot.emit(isroot or islink)
-
-#    def custom_onRootPathChanged(self, path):
-#        #self.atDeviceRoot.emit(os.path.ismount(path))
-#        isroot = os.path.ismount(path)
-#        islink = False
-#        if path == '/home/avidcnc/linuxcnc/nc_files/USERS':
-#          islink = True
-#        print('CHANGED:')
-#        print(path)
-#        print(islink)
-#        self.atDeviceRoot.emit(isroot or islink)
-
-
-
+        self.operation.setTabVisible(2,False)
+        self.operation.setTabVisible(3,False)
+        self.operation.setTabVisible(4,False)
+        self.tabWidget_3.setTabVisible(2,False)

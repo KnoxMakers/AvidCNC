@@ -1,11 +1,9 @@
 loadrt time
-loadrt not
 
 addf time.0 servo-thread
-addf not.0 servo-thread
 
-net prog-running not.0.in <= halui.program.is-idle
-net cycle-timer time.0.start <= not.0.out
+net prog-running n_timer.in <= halui.program.is-idle
+net cycle-timer time.0.start <= n_timer.out
 net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
 net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
 net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
@@ -223,3 +221,19 @@ net y-max-limit-adjusted y-atc-offset.out => ini.y.max_limit
 
 # *** End Rack ATC Offset ***
 
+# Probe_screen_v2 with vers.by probe
+# The next two lines are only needed if the pins had been connected before
+#unlinkp iocontrol.0.tool-change
+#unlinkp iocontrol.0.tool-changed
+
+# link to auto tool measurement toolchange, so you get the advantage of tool description on change dialog
+# these settings were moved to probe_screen.hal:
+#net tool-change            probe.toolchange-change    <=   iocontrol.0.tool-change 
+#net tool-changed           probe.toolchange-changed   <=   iocontrol.0.tool-changed
+#net tool-prep-number       probe.toolchange-number    <=   iocontrol.0.tool-prep-number
+
+net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+net tool-number             =>  qtpyvcp_manualtoolchange.number
+	
+net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared

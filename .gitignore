@@ -1,4 +1,9 @@
 avidcnc-probe/__pycache__
+avidcnc-probe/__pycache__/*
+avidcnc-sim/__pycache__/*
+avidcnc-sim/__pycache__
+avidcnc-sim/python/__pycache__/*
+avidcnc-sim/python/__pycache__
 .vcp_persistent_data.pickle 
 avidcnc-probe/linuxcnc.var
 avidcnc-probe/linuxcnc.var.bak
