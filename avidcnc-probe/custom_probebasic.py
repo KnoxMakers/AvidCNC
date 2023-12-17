@@ -2,6 +2,11 @@ import os
 
 from probe_basic.probe_basic import ProbeBasic
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
+from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
+from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -94,7 +99,41 @@ class CustomProbeBasic(ProbeBasic):
         self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
         self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
 
+        self.filesystemtable.atDeviceRoot['bool'].connect(self.main_folder_up_button.setDisabled) # type: ignore
+
         self.operation.setTabVisible(2,False)
         self.operation.setTabVisible(3,False)
         self.operation.setTabVisible(4,False)
         self.tabWidget_3.setTabVisible(2,False)
+
+        self.frame_17.setMinimumSize(QtCore.QSize(250, 300))
+        self.frame_17.setMaximumSize(QtCore.QSize(250, 300))
+        self.frame_17.setGeometry(QtCore.QRect(320, 80, 250, 300))
+
+        self.frame_18.setGeometry(QtCore.QRect(320, 385, 250, 150))
+
+        self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_19.setContentsMargins(2,2,2,2)
+        self.horizontalLayout_19.setSpacing(6)
+        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
+        self.verticalLayout_49.insertLayout(4, self.horizontalLayout_19, 0)
+
+
+        self.tool_rack_button = SubCallButton(None, filename="store_tool_in_rack.ngc")
+        self.tool_rack_button.setText("Store Tool in Rack")
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tool_rack_button.sizePolicy().hasHeightForWidth())
+        self.tool_rack_button.setSizePolicy(sizePolicy)
+        self.tool_rack_button.setMinimumSize(QtCore.QSize(120, 45))
+        self.tool_rack_button.setMaximumSize(QtCore.QSize(16777215, 45))
+        self.tool_rack_button.setMouseTracking(True)
+        self.tool_rack_button.setTabletTracking(False)
+        self.tool_rack_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.tool_rack_button.setObjectName("tool_rack_button")
+        self.tool_rack_button.setStyleSheet("QPushButton {\n"
+"    font-family: \"Bebas Kai\";\n"
+"    font-size: 16pt;\n"
+"}\n")
+        self.horizontalLayout_19.addWidget(self.tool_rack_button)
