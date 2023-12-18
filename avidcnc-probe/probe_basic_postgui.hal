@@ -242,3 +242,9 @@ net y-max-limit-adjusted y-atc-offset.out => ini.y.max_limit
 # M68 E00 Q#<_ini[AXIS_Y]MAX_LIMIT_ADDITIONAL> 
 
 # *** End Rack ATC Offset ***
+
+net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+net tool-number             =>  qtpyvcp_manualtoolchange.number
+        
+net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared

@@ -42,6 +42,8 @@ alias pin hm2_7i76e.0.7i76.0.0.input-12-not y-servo-hlfb
 alias pin hm2_7i76e.0.7i76.0.0.input-13-not y2-servo-hlfb
 alias pin hm2_7i76e.0.7i76.0.0.input-14-not z-servo-hlfb
 alias pin hm2_7i76e.0.7i76.0.0.input-15-not a-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.output-04 tchg-out
+alias pin hm2_7i76e.0.7i76.0.0.output-05 air-purge-out
 
 net x-servo-fault x-servo-hlfb x-hlfb-and2.in0
 net machine-is-enabled  x-hlfb-and2.in1
@@ -102,10 +104,10 @@ net z-enable  =>     hm2_7i76e.0.7i76.0.0.output-02
 net a-enable  =>     hm2_7i76e.0.7i76.0.0.output-03
 
 # --- TCHG-OUT ---
-net tchg-out  =>     hm2_7i76e.0.7i76.0.0.output-04
+net tchg-out-net =>      motion.digital-out-00 => tchg-out
 
 # --- AIR-PURGE-OUT ---
-net air-purge-out  =>     hm2_7i76e.0.7i76.0.0.output-05
+net air-purge-net  =>    motion.digital-out-01 => air-purge-out
 
 # --- COOLANT-MIST ---
 net coolant-mist  =>     hm2_7i76e.0.7i76.0.0.output-06
@@ -135,10 +137,10 @@ net max-home-y2     <=  hm2_7i76e.0.7i76.0.0.input-03-not
 net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-04-not
 
 # --- ESTOP-EXT ---
-#net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-05-not
+net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-05
 
 # estop loopback
-net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
+#net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
 # --- TOUCH PROBE-IN (Z-PROBE) ---
 net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-06
@@ -467,8 +469,8 @@ net in-position               <=  motion.in-position
 
 #  ---estop signals---
 
-#net estop-out     <=  iocontrol.0.user-enable-out
-#net estop-ext     =>  iocontrol.0.emc-enable-in
+net estop-out     <=  iocontrol.0.user-enable-out
+net estop-ext     =>  iocontrol.0.emc-enable-in
 
 #  ---manual tool change signals---
 
