@@ -155,7 +155,7 @@ O300 elseif [#<newtool> GT 0]
 
             ; If we don't have a old tool or we're coming back from a manual tool change
             ; we need to move Y into pickup position
-            O330 if [#<oldtool> EQ 0 OR [#<oldpocket> GT #<_ini[ATC]NUMPOCKETS>] ]
+            O330 if [#<oldtool> LE 0 OR [#<oldpocket> GT #<_ini[ATC]NUMPOCKETS>] ]
                G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>]
             O330 endif
            
