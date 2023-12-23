@@ -5,6 +5,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
 from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
 from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
+from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -137,3 +138,10 @@ class CustomProbeBasic(ProbeBasic):
 "    font-size: 16pt;\n"
 "}\n")
         self.horizontalLayout_19.addWidget(self.tool_rack_button)
+
+        self.dialogbutton = DialogButton(self.frame_26)
+        self.dialogbutton.setText("Shutdown System")
+        self.dialogbutton.setProperty("dialogName", "shutdown")
+        self.dialogbutton.setMinimumSize(QtCore.QSize(0, 40))
+        self.dialogbutton.setObjectName("dialogbutton")
+        self.verticalLayout_32.addWidget(self.dialogbutton)
