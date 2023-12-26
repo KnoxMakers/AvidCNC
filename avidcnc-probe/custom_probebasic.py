@@ -145,3 +145,8 @@ class CustomProbeBasic(ProbeBasic):
         self.dialogbutton.setMinimumSize(QtCore.QSize(0, 40))
         self.dialogbutton.setObjectName("dialogbutton")
         self.verticalLayout_32.addWidget(self.dialogbutton)
+
+        self.verticalLayout_32.setSpacing(11)
+        self.verticalLayout_32.setContentsMargins(9,6,9,6)
+
+        self.verticalLayout_50.setSpacing(11)
