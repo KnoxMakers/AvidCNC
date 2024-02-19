@@ -11,11 +11,20 @@ setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.y2,pid.z,pid.s
 
 loadrt sum2 names=y-atc-offset
-loadrt or2 names=mpg-mode-or
+loadrt or2 names=mpg-mode-or,tchg-or
 loadrt not names=pendant-not
 loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2
+loadrt debounce cfg=1
+addf debounce.0 servo-thread
+
+setp debounce.0.delay 50
+
+loadrt dsmono
+setp dsmono.0.deadtime-ns 125000000
+addf dsmono.0 servo-thread
 
 addf mpg-mode-or servo-thread
+addf tchg-or servo-thread
 addf pendant-not servo-thread
 addf mpg-and2 servo-thread
 addf y-atc-offset servo-thread
@@ -103,8 +112,8 @@ net z-enable  =>     hm2_7i76e.0.7i76.0.0.output-02
 # --- A-ENABLE ---
 net a-enable  =>     hm2_7i76e.0.7i76.0.0.output-03
 
-# --- TCHG-OUT ---
-net tchg-out-net =>      motion.digital-out-00 => tchg-out
+# --- TCHG-MDI ---
+net tchg-mdi-net =>      motion.digital-out-00 => tchg-or.in0
 
 # --- AIR-PURGE-OUT ---
 net air-purge-net  =>    motion.digital-out-01 => air-purge-out
@@ -122,19 +131,22 @@ net spindle-cw  =>     hm2_7i76e.0.7i76.0.0.output-09
 
 
 # --- BOTH-HOME-X ---
-net both-home-x     <=  hm2_7i76e.0.7i76.0.0.input-00-not
+net both-home-x     <=  hm2_7i76e.0.7i76.0.0.input-16-not
 
 # --- MAX-HOME-Y ---
-net max-home-y     <=  hm2_7i76e.0.7i76.0.0.input-01-not
+net max-home-y     <=  hm2_7i76e.0.7i76.0.0.input-17-not
 
 # --- MIN-Y2 ---
-net min-y2     <=  hm2_7i76e.0.7i76.0.0.input-02-not
+net min-y2     <=  hm2_7i76e.0.7i76.0.0.input-18-not
 
 # --- MAX-HOME-Y2 ---
-net max-home-y2     <=  hm2_7i76e.0.7i76.0.0.input-03-not
+net max-home-y2     <=  hm2_7i76e.0.7i76.0.0.input-19-not
 
 # --- MAX-HOME-Z ---
-net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-04-not
+net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-20-not
+
+# --- AIR PRESURE ---
+net air-presure    <=  hm2_7i76e.0.7i76.0.0.input-04 => motion.digital-in-00
 
 # --- ESTOP-EXT ---
 net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-05
@@ -143,7 +155,10 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-05
 #net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
 # --- TOUCH PROBE-IN (Z-PROBE) ---
-net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-06
+net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => dsmono.0.in
+net probe-in <= dsmono.0.out
+net probe-in => motion.probe-input
+
 
 # --- TOOL HEIGHT PROBE ---
 net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07
@@ -153,7 +168,9 @@ net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07
 net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08
 
 # --- TOOL CHANGE BUTTON IN ---
-net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09
+net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09 => tchg-or.in1
+net tchg-out-net <= tchg-or.out => tchg-out
+
 
 # --- AUX-IN ---
 net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-10
@@ -459,7 +476,7 @@ net coolant-flood     <=  iocontrol.0.coolant-flood
 
 #  ---probe signal---
 
-net probe-in     =>  motion.probe-input
+#net probe-in     =>  motion.probe-input
 
 #  ---motion control signals---
 

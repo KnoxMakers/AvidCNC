@@ -13,7 +13,7 @@ net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
 
 # *** Probe graphic simulation trigger push probe tip ***
 #net probe-in  =>  qtpyvcp.probe-in.out
-net probe-in  <=  qtpyvcp.probe-led.on
+net probe-out  <=  qtpyvcp.probe-led.on
 
 # *** Set line below for actual spindle readout from your hal file ***
 #net spindle-rpm-filtered scale_to_rpm.out  =>  qtpyvcp.spindle-encoder-rpm.in
