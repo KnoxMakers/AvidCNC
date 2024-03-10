@@ -11,9 +11,9 @@ setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.y2,pid.z,pid.s
 
 loadrt sum2 names=y-atc-offset
-loadrt or2 names=mpg-mode-or,tchg-or
+loadrt or2 names=mpg-mode-or,tchg-or,probe-or
 loadrt not names=pendant-not
-loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2
+loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2,estop-and
 loadrt debounce cfg=1
 addf debounce.0 servo-thread
 
@@ -25,6 +25,8 @@ addf dsmono.0 servo-thread
 
 addf mpg-mode-or servo-thread
 addf tchg-or servo-thread
+addf estop-and servo-thread
+addf probe-or servo-thread
 addf pendant-not servo-thread
 addf mpg-and2 servo-thread
 addf y-atc-offset servo-thread
@@ -149,23 +151,24 @@ net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-20-not
 net air-presure    <=  hm2_7i76e.0.7i76.0.0.input-04 => motion.digital-in-00
 
 # --- ESTOP-EXT ---
-net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-05
+net estop-ext-or     <=  hm2_7i76e.0.7i76.0.0.input-05 => estop-and.in0 
 
 # estop loopback
 #net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
 # --- TOUCH PROBE-IN (Z-PROBE) ---
-net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => dsmono.0.in
+net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => probe-or.in0
+net probe-or-sig     <=  probe-or.out => dsmono.0.in
+
 net probe-in <= dsmono.0.out
 net probe-in => motion.probe-input
 
-
 # --- TOOL HEIGHT PROBE ---
-net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07
+net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07-not => probe-or.in1
 
 # --- TOOL HEIGHT PROBE OVER TRAVEL ---
 
-net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08
+net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08 => estop-and.in1
 
 # --- TOOL CHANGE BUTTON IN ---
 net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09 => tchg-or.in1
@@ -487,7 +490,7 @@ net in-position               <=  motion.in-position
 #  ---estop signals---
 
 net estop-out     <=  iocontrol.0.user-enable-out
-net estop-ext     =>  iocontrol.0.emc-enable-in
+net estop-ext     =>  estop-and.out => iocontrol.0.emc-enable-in
 
 #  ---manual tool change signals---
 
