@@ -6,6 +6,7 @@ from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
 from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
 from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
+from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -25,7 +26,7 @@ class CustomProbeBasic(ProbeBasic):
     """
     def __init__(self, *args, **kwargs):
         super(CustomProbeBasic, self).__init__(*args, **kwargs)
-
+        _translate = QtCore.QCoreApplication.translate
         # rename the Flood button
         self.flood_button.setText("Vaccum")
 
@@ -150,3 +151,90 @@ class CustomProbeBasic(ProbeBasic):
         self.verticalLayout_32.setContentsMargins(9,6,9,6)
 
         self.verticalLayout_50.setSpacing(11)
+
+        self.lockScreen(self)
+        #self.unlockScreen(self)
+
+        #self.settings_tab = QtWidgets.QWidget()
+        self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
+        self.unlock_frame.setGeometry(1110, 550, 501, 80)
+
+        self.unlock_layout = QtWidgets.QHBoxLayout(self.unlock_frame)
+        self.unlock_layout.setContentsMargins(10,1,0,1)
+        self.unlock_layout.setSpacing(12)
+        self.unlock_layout.setObjectName("unlock_layout")
+
+        # Create the UNLOCK button and connect it to the show_pin_dialog method
+        self.unlock_button = QtWidgets.QPushButton("UNLOCK", self.unlock_frame)
+        self.unlock_layout.addWidget(self.unlock_button)
+        self.unlock_button.setMinimumSize(80, 40)  # Set the minimum size
+
+        self.unlock_line_edit_number = VCPSettingsLineEdit(self.unlock_frame)
+        self.unlock_line_edit_number.setMinimumHeight(31)  # Set the minimum height
+        self.unlock_line_edit_number.setMaximumWidth(80)  # Set the maximum width
+        self.unlock_layout.addWidget(self.unlock_line_edit_number)
+        self.unlock_line_edit_number.setProperty("textFormat", _translate("Form", "{:.0f}"))
+        self.unlock_line_edit_number.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+
+        self.spacer_item = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.unlock_layout.addItem(self.spacer_item)
+
+        self.unlock_button.clicked.connect(self.unlock_button_clicked)
+
+    def unlock_button_clicked(self):
+        # Check the value of unlock_line_edit_number
+        input_text = self.unlock_line_edit_number.text()
+
+        if self.unlock_button.text() == "UNLOCK" and input_text == '1337':
+            # Unlock functionality
+            self.unlockScreen()
+            # Change button label to "Lock"
+            self.unlock_button.setText("LOCK")
+            self.unlock_line_edit_number.clear()
+            self.unlock_line_edit_number.hide()
+        elif self.unlock_button.text() == "LOCK":
+            # Lock functionality
+            self.lockScreen()
+            # Change button label back to "Unlock"
+            self.unlock_button.setText("UNLOCK")
+            self.unlock_line_edit_number.show()
+        else:
+            # Display error message
+            QtWidgets.QMessageBox.warning(self, "Error", "Incorrect code entered. Please try again.")
+
+    def lockScreen(self, *args, **kwargs):
+        # hide the usb frame
+        self.frame_35.hide()
+
+        # hide the copy to usb button in file dialog
+        self.copy_to_usb_2.hide()
+
+        # hide the tool setter screen
+        for child in self.widget_38.findChildren(QtWidgets.QWidget):
+            child.hide()
+
+        self.probe_tool_number.setDisabled(True)
+        self.probe_tool_number.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.probe_fast_fr.setDisabled(True)
+        self.probe_fast_fr.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.probe_slow_fr.setDisabled(True)
+        self.probe_slow_fr.setStyleSheet("background-color: rgb(192, 192, 192);")
+
+    def unlockScreen(self, *args, **kwargs):
+        # hide the usb frame
+        self.frame_35.show()
+
+        # hide the copy to usb button in file dialog
+        self.copy_to_usb_2.show()
+
+        # hide the tool setter screen
+        for child in self.widget_38.findChildren(QtWidgets.QWidget):
+            child.show()
+
+        self.probe_tool_number.setDisabled(False)
+        self.probe_tool_number.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.probe_fast_fr.setDisabled(False)
+        self.probe_fast_fr.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.probe_slow_fr.setDisabled(False)
+        self.probe_slow_fr.setStyleSheet("background-color: rgb(255, 255, 255);")
