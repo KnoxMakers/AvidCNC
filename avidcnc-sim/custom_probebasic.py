@@ -170,6 +170,7 @@ class CustomProbeBasic(ProbeBasic):
         self.unlock_button.setMinimumSize(80, 40)  # Set the minimum size
 
         self.unlock_line_edit_number = VCPSettingsLineEdit(self.unlock_frame)
+        self.unlock_line_edit_number.setObjectName("unlock_line_edit_number")
         self.unlock_line_edit_number.setMinimumHeight(31)  # Set the minimum height
         self.unlock_line_edit_number.setMaximumWidth(80)  # Set the maximum width
         self.unlock_layout.addWidget(self.unlock_line_edit_number)
