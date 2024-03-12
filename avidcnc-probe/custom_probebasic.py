@@ -1,4 +1,5 @@
 import os
+import sys
 
 from probe_basic.probe_basic import ProbeBasic
 from qtpyvcp.plugins import getPlugin
@@ -8,6 +9,7 @@ from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
 from PyQt5 import QtCore, QtGui, QtWidgets
+from linuxcnc import ini
 
 
 class CustomProbeBasic(ProbeBasic):
@@ -24,9 +26,25 @@ class CustomProbeBasic(ProbeBasic):
     ```       
 
     """
+
+    INI_FILE = os.environ.get("INI_FILE_NAME")
+    CONFIG_DIR = os.environ.get('CONFIG_DIR')
+
     def __init__(self, *args, **kwargs):
         super(CustomProbeBasic, self).__init__(*args, **kwargs)
         _translate = QtCore.QCoreApplication.translate
+
+        if self.INI_FILE is None:
+            self.INI_FILE = ini_file or '/dev/null'
+            os.environ['INI_FILE_NAME'] = self.INI_FILE
+
+        if self.CONFIG_DIR is None:
+            self.CONFIG_DIR = os.path.dirname(self.INI_FILE)
+            os.environ['CONFIG_DIR'] = self.CONFIG_DIR
+
+        self.ini = ini(self.INI_FILE)
+        self.pin = self.ini.find('DISPLAY', 'PIN') or "1234"
+
         # rename the Flood button
         self.flood_button.setText("Vaccum")
 
@@ -152,6 +170,8 @@ class CustomProbeBasic(ProbeBasic):
 
         self.verticalLayout_50.setSpacing(11)
 
+        self.mdi_entry_box_4.hide()
+
         self.lockScreen(self)
         #self.unlockScreen(self)
 
@@ -176,7 +196,9 @@ class CustomProbeBasic(ProbeBasic):
         self.unlock_layout.addWidget(self.unlock_line_edit_number)
         self.unlock_line_edit_number.setProperty("textFormat", _translate("Form", "{:.0f}"))
         self.unlock_line_edit_number.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.unlock_line_edit_number.setText("0000")
 
+        self.run_from_line_Num.setFocusPolicy(QtCore.Qt.ClickFocus)
 
         self.spacer_item = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.unlock_layout.addItem(self.spacer_item)
@@ -187,12 +209,12 @@ class CustomProbeBasic(ProbeBasic):
         # Check the value of unlock_line_edit_number
         input_text = self.unlock_line_edit_number.text()
 
-        if self.unlock_button.text() == "UNLOCK" and input_text == '1337':
+        if self.unlock_button.text() == "UNLOCK" and input_text == self.pin:
             # Unlock functionality
             self.unlockScreen()
             # Change button label to "Lock"
             self.unlock_button.setText("LOCK")
-            self.unlock_line_edit_number.clear()
+            self.unlock_line_edit_number.setText("0000")
             self.unlock_line_edit_number.hide()
         elif self.unlock_button.text() == "LOCK":
             # Lock functionality
