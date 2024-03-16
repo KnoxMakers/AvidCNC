@@ -115,11 +115,14 @@ class CustomProbeBasic(ProbeBasic):
         _file_locations.local_locations.pop("NC Files")
 
         self.removabledevicecombobox.onRemovableDevicesChanged(_file_locations.removable_devices.value)
-        recentfilecombobox_length = len(self.recentfilecombobox_2)
-        self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
-        self.recentfilecombobox_2.removeItem(recentfilecombobox_length-2)
+        recentfilecombobox_2_length = len(self.recentfilecombobox_2)
+        self.recentfilecombobox_2.removeItem(recentfilecombobox_2_length-2)
+        self.recentfilecombobox_2.removeItem(recentfilecombobox_2_length-2)
 
-        self.filesystemtable.atDeviceRoot['bool'].connect(self.main_folder_up_button.setDisabled) # type: ignore
+        recentfilecombobox_length = len(self.recentfilecombobox)
+        self.recentfilecombobox.removeItem(recentfilecombobox_length-2)
+        self.recentfilecombobox.removeItem(recentfilecombobox_length-2)
+
 
         self.operation.setTabVisible(2,False)
         self.operation.setTabVisible(3,False)
@@ -173,9 +176,7 @@ class CustomProbeBasic(ProbeBasic):
         self.mdi_entry_box_4.hide()
 
         self.lockScreen(self)
-        #self.unlockScreen(self)
 
-        #self.settings_tab = QtWidgets.QWidget()
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
         self.unlock_frame.setGeometry(1110, 550, 501, 80)
 
@@ -204,6 +205,47 @@ class CustomProbeBasic(ProbeBasic):
         self.unlock_layout.addItem(self.spacer_item)
 
         self.unlock_button.clicked.connect(self.unlock_button_clicked)
+
+        self.main_load_gcode_button.setMinimumWidth(110)
+        self.main_load_gcode_button.setMaximumWidth(110)
+        self.main_load_gcode_button.setEnabled(False)
+
+        self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: self.main_load_gcode_button.setEnabled(True))
+
+        self.filesystemtable.rootChanged.connect(lambda: self.main_folder_up_button.setEnabled(False) 
+           if self.filesystemtable.model.rootPath().lower() == '/home/avidcnc/linuxcnc/nc_files/users'
+           else self.main_folder_up_button.setEnabled(True))
+        self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: (
+           self.main_load_gcode_button.setText("SELECT FOLDER") if not x else None,
+           self.main_load_gcode_button.setText("LOAD G-CODE") if x else None
+        ))
+
+        self.main_load_gcode_button.clicked.connect(lambda: ( 
+            self.main_load_gcode_button.setText("LOAD G-CODE") if self.main_load_gcode_button.text() == 'SELECT FOLDER' else None
+        ))
+
+        self.recentfilecombobox.model().rowsInserted.connect(self.remove_browse_option)
+        self.recentfilecombobox_2.model().rowsInserted.connect(self.remove_browse_option)
+
+        self.filesystemtable.model.rootPathChanged.connect(lambda: (
+            self.filesystemtable.clearSelection(),
+            self.main_load_gcode_button.setEnabled(False)
+        ))
+
+    def remove_browse_option(self):
+        for index in range(self.recentfilecombobox.count()):
+            if self.recentfilecombobox.itemText(index) == 'Browse for files ...':
+                recentfilecombobox_length = len(self.recentfilecombobox)
+                self.recentfilecombobox.removeItem(recentfilecombobox_length - 2)
+                self.recentfilecombobox.removeItem(recentfilecombobox_length - 2)
+                break
+
+        for index in range(self.recentfilecombobox_2.count()):
+            if self.recentfilecombobox_2.itemText(index) == 'Browse for files ...':
+                recentfilecombobox_2_length = len(self.recentfilecombobox_2)
+                self.recentfilecombobox_2.removeItem(recentfilecombobox_2_length - 2)
+                self.recentfilecombobox_2.removeItem(recentfilecombobox_2_length - 2)
+                break
 
     def unlock_button_clicked(self):
         # Check the value of unlock_line_edit_number
