@@ -220,14 +220,14 @@ class CustomProbeBasic(ProbeBasic):
         self.air_psi_led.setSizePolicy(sizePolicy)
         self.air_psi_led.setDiameter(25)
         self.air_psi_led.setMaximumWidth(25)
-        self.air_psi_led.setColor(QtGui.QColor(44, 41, 255))
+        self.air_psi_led.setColor(QtGui.QColor(255, 0, 0))
         self.air_psi_led.setState(False)
         self.air_psi_led.setObjectName("air_psi_led")
         self.air_psi_led.setProperty("pinBaseName", _translate("Form", "air-ps-led"))
 
         self.air_psi_label = QtWidgets.QLabel(self.status_led_frame)
         self.status_led_layout.addWidget(self.air_psi_label)
-        self.air_psi_label.setText("Air PSI")
+        self.air_psi_label.setText("Low PSI")
         self.air_psi_label.setStyleSheet("QLabel{\npadding-left:2px;    color: rgb(238, 238, 236);\n	font: 16pt \"Bebas Kai\";\n}")
         self.air_psi_label.setMaximumWidth(80)
 
