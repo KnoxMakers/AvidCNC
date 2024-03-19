@@ -8,6 +8,7 @@ from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
 from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
+from qtpyvcp.widgets.hal_widgets.hal_led import HalLedIndicator
 from PyQt5 import QtCore, QtGui, QtWidgets
 from linuxcnc import ini
 
@@ -198,6 +199,78 @@ class CustomProbeBasic(ProbeBasic):
         self.unlock_line_edit_number.setProperty("textFormat", _translate("Form", "{:.0f}"))
         self.unlock_line_edit_number.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.unlock_line_edit_number.setText("0000")
+
+        self.status_led_frame = QtWidgets.QFrame(self.main_override_tool_qframe)
+        self.status_led_layout = QtWidgets.QHBoxLayout(self.status_led_frame)
+
+        self.status_led_layout.setContentsMargins(4,4,4,4)
+        self.status_led_layout.setSpacing(4)
+        self.status_led_frame.setGeometry(QtCore.QRect(22, 15, 393, 40))
+
+        self.main_override_tool_qframe.setMaximumHeight(340)
+        self.main_override_tool_qframe.setMinimumHeight(340)
+        self.main_override_tool_qframe.setStyleSheet(".QFrame{\npadding-top:55px;\n padding-bottom:15px;\n    padding-left: 8px;\n    padding-right: 8px;\n    border-left-width: 1px;\n    border-right-width:1px;\n}")
+
+        self.status_led_frame.setStyleSheet(".QFrame{\n    border-style: solid;\n    border-color: rgb(176, 179,172);\n    border-width: 1px;\n    border-radius: 4px;\n    background-color: rgb(90, 90, 90);\n    padding: -5px;\n}")
+        self.status_spacer_item = QtWidgets.QSpacerItem(15, 20, 20, 20)
+        self.status_led_layout.addItem(self.status_spacer_item)
+
+        self.air_psi_led = HalLedIndicator(self.status_led_frame)
+        self.status_led_layout.addWidget(self.air_psi_led)
+        self.air_psi_led.setSizePolicy(sizePolicy)
+        self.air_psi_led.setDiameter(25)
+        self.air_psi_led.setMaximumWidth(25)
+        self.air_psi_led.setColor(QtGui.QColor(44, 41, 255))
+        self.air_psi_led.setState(False)
+        self.air_psi_led.setObjectName("air_psi_led")
+        self.air_psi_led.setProperty("pinBaseName", _translate("Form", "air-ps-led"))
+
+        self.air_psi_label = QtWidgets.QLabel(self.status_led_frame)
+        self.status_led_layout.addWidget(self.air_psi_label)
+        self.air_psi_label.setText("Air PSI")
+        self.air_psi_label.setStyleSheet("QLabel{\npadding-left:2px;    color: rgb(238, 238, 236);\n	font: 16pt \"Bebas Kai\";\n}")
+        self.air_psi_label.setMaximumWidth(80)
+
+        self.status_spacer_item2 = QtWidgets.QSpacerItem(25, 20, 20, 20)
+        self.status_led_layout.addItem(self.status_spacer_item2)
+
+        self.drawbar_led = HalLedIndicator(self.status_led_frame)
+        self.status_led_layout.addWidget(self.drawbar_led)
+        self.drawbar_led.setSizePolicy(sizePolicy)
+        self.drawbar_led.setDiameter(25)
+        self.drawbar_led.setMaximumWidth(25)
+        self.drawbar_led.setColor(QtGui.QColor(44, 41, 255))
+        self.drawbar_led.setState(False)
+        self.drawbar_led.setObjectName("drawbar_led")
+        self.drawbar_led.setProperty("pinBaseName", _translate("Form", "drawbar-led"))
+
+        self.drawbar_label = QtWidgets.QLabel(self.status_led_frame)
+        self.status_led_layout.addWidget(self.drawbar_label)
+        self.drawbar_label.setText("Draw Bar")
+        self.drawbar_label.setStyleSheet("QLabel{\npadding-left:2px;    color: rgb(238, 238, 236);\n	font: 16pt \"Bebas Kai\";\n}")
+        self.drawbar_label.setMaximumWidth(80)
+
+        self.status_spacer_item3 = QtWidgets.QSpacerItem(25, 20, 20, 20)
+        self.status_led_layout.addItem(self.status_spacer_item3)
+
+        self.case_air_led = HalLedIndicator(self.status_led_frame)
+        self.status_led_layout.addWidget(self.case_air_led)
+        self.case_air_led.setSizePolicy(sizePolicy)
+        self.case_air_led.setDiameter(25)
+        self.case_air_led.setMaximumWidth(25)
+        self.case_air_led.setColor(QtGui.QColor(44, 41, 255))
+        self.case_air_led.setState(False)
+        self.case_air_led.setObjectName("case_air_led")
+        self.case_air_led.setProperty("pinBaseName", _translate("Form", "case-air-led"))
+
+        self.case_air_label = QtWidgets.QLabel(self.status_led_frame)
+        self.status_led_layout.addWidget(self.case_air_label)
+        self.case_air_label.setText("Spindle Purge")
+        self.case_air_label.setStyleSheet("QLabel{\npadding-left:2px;    color: rgb(238, 238, 236);\n	font: 16pt \"Bebas Kai\";\n}")
+        self.case_air_label.setMaximumWidth(120)
+
+        self.status_spacer_item4 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.status_led_layout.addItem(self.status_spacer_item4)
 
         self.run_from_line_Num.setFocusPolicy(QtCore.Qt.ClickFocus)
 
