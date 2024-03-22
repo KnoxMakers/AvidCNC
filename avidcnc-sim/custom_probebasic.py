@@ -9,6 +9,7 @@ from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
 from qtpyvcp.widgets.hal_widgets.hal_led import HalLedIndicator
+from qtpyvcp.utilities.info import Info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from linuxcnc import ini
 
@@ -220,7 +221,7 @@ class CustomProbeBasic(ProbeBasic):
         self.air_psi_led.setSizePolicy(sizePolicy)
         self.air_psi_led.setDiameter(25)
         self.air_psi_led.setMaximumWidth(25)
-        self.air_psi_led.setColor(QtGui.QColor(255, 0, 0))
+        self.air_psi_led.setColor(QtGui.QColor(205, 3, 3))
         self.air_psi_led.setState(False)
         self.air_psi_led.setObjectName("air_psi_led")
         self.air_psi_led.setProperty("pinBaseName", _translate("Form", "air-psi-led"))
@@ -239,7 +240,7 @@ class CustomProbeBasic(ProbeBasic):
         self.drawbar_led.setSizePolicy(sizePolicy)
         self.drawbar_led.setDiameter(25)
         self.drawbar_led.setMaximumWidth(25)
-        self.drawbar_led.setColor(QtGui.QColor(44, 41, 255))
+        self.drawbar_led.setColor(QtGui.QColor(205, 3, 3))
         self.drawbar_led.setState(False)
         self.drawbar_led.setObjectName("drawbar_led")
         self.drawbar_led.setProperty("pinBaseName", _translate("Form", "drawbar-led"))
@@ -258,7 +259,7 @@ class CustomProbeBasic(ProbeBasic):
         self.case_air_led.setSizePolicy(sizePolicy)
         self.case_air_led.setDiameter(25)
         self.case_air_led.setMaximumWidth(25)
-        self.case_air_led.setColor(QtGui.QColor(44, 41, 255))
+        self.case_air_led.setColor(QtGui.QColor(205, 3, 3))
         self.case_air_led.setState(False)
         self.case_air_led.setObjectName("case_air_led")
         self.case_air_led.setProperty("pinBaseName", _translate("Form", "case-air-led"))
@@ -268,6 +269,8 @@ class CustomProbeBasic(ProbeBasic):
         self.case_air_label.setText("Spindle Purge")
         self.case_air_label.setStyleSheet("QLabel{\npadding-left:2px;    color: rgb(238, 238, 236);\n	font: 16pt \"Bebas Kai\";\n}")
         self.case_air_label.setMaximumWidth(120)
+
+        self.probe_led.setColor(QtGui.QColor(205, 3, 3)) #was 44, 41, 255
 
         self.status_spacer_item4 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.status_led_layout.addItem(self.status_spacer_item4)
@@ -304,6 +307,8 @@ class CustomProbeBasic(ProbeBasic):
             self.filesystemtable.clearSelection(),
             self.main_load_gcode_button.setEnabled(False)
         ))
+
+    #self.MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 
     def remove_browse_option(self):
         for index in range(self.recentfilecombobox.count()):
