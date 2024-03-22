@@ -237,3 +237,14 @@ net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
 net tool-number             =>  qtpyvcp_manualtoolchange.number
 	
 net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
+
+setp spindle-on-delay.on-delay 0
+setp spindle-on-delay.off-delay 5
+net spindle-is-on-interlock spindle.0.on => spindle-on-delay.in
+net spindle-is-on-delayed spindle-on-delay.out => s_interlock.encoder-counts
+
+net draw-bar motion.digital-out-00 =>   qtpyvcp.drawbar-led.on
+net low-psi-net motion.digital-in-00 => n_air-psi.in
+setp qtpyvcp.air-psi-led.flash-rate 250
+net low-psi-net_n  n_air-psi.out => qtpyvcp.air-psi-led.flash
+net low-psi-net_n  n_air-psi.out => qtpyvcp.air-psi-led.on

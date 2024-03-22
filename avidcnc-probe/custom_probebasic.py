@@ -223,7 +223,7 @@ class CustomProbeBasic(ProbeBasic):
         self.air_psi_led.setColor(QtGui.QColor(255, 0, 0))
         self.air_psi_led.setState(False)
         self.air_psi_led.setObjectName("air_psi_led")
-        self.air_psi_led.setProperty("pinBaseName", _translate("Form", "air-ps-led"))
+        self.air_psi_led.setProperty("pinBaseName", _translate("Form", "air-psi-led"))
 
         self.air_psi_label = QtWidgets.QLabel(self.status_led_frame)
         self.status_led_layout.addWidget(self.air_psi_label)
