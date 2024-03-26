@@ -1,0 +1,21 @@
+(New Program)
+; YOU MUST RUN THIS WHEN YOU FIRST POWER UP THE MACHINE
+; THIS IS THE SPINDLE WARM UP PROGRAM
+; Will take 14 minutes
+
+G0 Z-.001 S6000 M3 ; Run 3 minutes
+G04 P180
+G0 Z0 S0 ; Cool down for 1 minute
+G04 P60
+G0 Z-.001 S12000 ; Run 4 minutes
+G04 P240
+G0 Z0 S0 ; Cool down for 1 minute
+G04 P60
+G0 Z-.001 S18000 ; Run 4 minutes
+G04 P240
+G0 Z0 S0 ; Cool down for 1 minute
+G04 P60 
+G0 Z-.001 
+M5 
+G0 Z0
+M30
