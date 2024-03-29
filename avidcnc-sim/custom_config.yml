@@ -9,7 +9,7 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
-        columns: TPXYZDR
+        columns: TPZDUR
 
   file_locations:
     provider: qtpyvcp.plugins.file_locations:FileLocations

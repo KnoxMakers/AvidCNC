@@ -5,10 +5,12 @@ loadrt [KINS]KINEMATICS
 # motion controller, get name and thread periods from ini file
 loadrt [EMCMOT]EMCMOT base_period_nsec=[EMCMOT]BASE_PERIOD servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=20 num_aio=64
 loadrt timedelay names=spindle-on-delay
-
+loadrt and2 names=a_low-psi
+addf a_low-psi servo-thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
 addf spindle-on-delay servo-thread
+setp a_low-psi.in1 1
 
 # loop position commands back to motion module feedback
 

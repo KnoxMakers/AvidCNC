@@ -7,7 +7,8 @@
 o<store_tool_in_rack> sub
 
 G49
-
+(PRINT, TOOLCALL: #<_current_pocket>, #<_current_tool>)
+(DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<_current_pocket>, #<_current_tool>}])
 T0 M6
 	
 o<store_tool_in_rack> endsub
