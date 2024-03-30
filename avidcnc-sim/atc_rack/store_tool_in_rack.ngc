@@ -7,10 +7,49 @@
 o<store_tool_in_rack> sub
 
 G49
-(PRINT, TOOLCALL: #<_current_pocket>, #<_current_tool>)
-(DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<_current_pocket>, #<_current_tool>}])
-T0 M6
-	
+
+#4 = #<_current_tool>
+#5 = #<_current_pocket>
+
+#<number_of_pockets> = 12
+o110 if [EXISTS[#<_ini[atc]pockets>]]
+    #<number_of_pockets> = #<_ini[atc]pockets>
+o110 endif
+
+#<_check_pocket> = #[4000 + #<_current_pocket>]
+o120 if [#<_check_pocket> GT 0 or #<_current_pocket> gt #<number_of_pockets>]
+    #3 = 1 ; seaking empty pocket
+    (print, Designated pocket occupied)
+    o121 while [#1 LT #<number_of_pockets>]
+        #1 = [#1+1]
+        #2 = #[4000+#1]
+        o122 if [#2 eq 0]
+            (print, Empty pocket found, placing in rack)
+            (print, T#<_current_tool> P#1)
+            M301 T#<_current_tool> P#1
+            #3 = 0
+            M61 Q0 G49 #5210 = 0 #3991 = 0
+            G10 L0
+            (print, XX T#4 P#1)
+            M61 Q#4 G49 #5210 = #4 #3991 = #4 #<tool_in_spindle> = #4
+            (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#1, #4]})
+            T0 M6
+            o121 break
+        o122 endif
+    o121 endwhile
+    o123 if [#3 eq 1]
+       o124 if [#<_current_pocket> GT #<number_of_pockets>] 
+        (ABORT, Tool T%d#<_current_tool> doesn't have a designated pocket, and no empty pockets available)
+       o124 else
+       (ABORT,  Pocket P%d#<_current_pocket> is already occupied with Tool T%d#<_check_pocket>, and no empty pockets available)
+       o124 endif
+    o123 endif
+o120 else
+    T0 M6
+    (PRINT, TOOLCALL: #5, #4)
+    (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#5, #4}])
+o120 endif
+
 o<store_tool_in_rack> endsub
 
 M2 (end program)

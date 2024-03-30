@@ -10,6 +10,7 @@
 
 
 import emccanon
+import re
 from interpreter import *
 from emccanon import MESSAGE
 throw_exceptions = 1
@@ -148,3 +149,39 @@ def change_epilog(self, **words):
     except Exception as e:
         self.set_errormsg("M6/change_epilog: %s" % (e))
         yield INTERP_ERROR
+
+def m301(self, **words):
+
+    try:
+        cblock = self.blocks[self.remap_level]
+        if not cblock.t_flag:
+            self.set_errormsg("T requires a tool number")
+            return INTERP_ERROR
+        self.params["tool"] = cblock.t_number
+    except Exception as e:
+        self.set_errormsg("T%d/prepare_prolog: %s" % (int(words['t']), e))
+        return INTERP_ERROR
+
+    try:
+        cblock = self.blocks[self.remap_level]
+        if not cblock.p_flag:
+            self.set_errormsg("P requires a pocket number")
+            return INTERP_ERROR
+        self.params["pocket"] = cblock.p_number
+    except Exception as e:
+        self.set_errormsg("T%d/prepare_prolog: %s" % (int(words['p']), e))
+        return INTERP_ERROR
+
+    filename = '/home/avidcnc/linuxcnc/configs/avidcnc-sim/tool.tbl'
+    updated_lines = []
+    with open(filename, 'r') as file:
+        for line in file:
+            parts = re.split(r'(\s+)', line.strip())  # Split by any whitespace sequence
+            if parts and re.match(r'^T{}(?:\s+|\Z)'.format(re.escape(str ( int ( cblock.t_number ) ) )), parts[0]):
+                parts[2] = f'P{int(cblock.p_number)}'  # Assuming cblock.p_number is an integer, Assuming the index of the second part is 2 after splitting
+                line = ''.join(parts) + '\n'  # Join parts back with their original whitespace
+            updated_lines.append(line)
+
+    with open(filename, 'w') as file:
+        for line in updated_lines:
+            file.write(line)
