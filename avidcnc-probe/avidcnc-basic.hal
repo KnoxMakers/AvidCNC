@@ -4,18 +4,23 @@
 # overwritten when you run PNCconf again
 
 loadrt [KINS]KINEMATICS
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=20 num_aio=64
 loadrt hostmot2
-loadrt hm2_eth board_ip="192.168.1.121" config="num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=00xxxx" 
+loadrt hm2_eth board_ip="192.168.1.121" config="num_encoders=1 num_pwmgens=0 num_stepgens=5 sserial_port_0=10xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.y2,pid.z,pid.s
-
+loadrt spindle_interlock names=s_interlock
+loadrt timedelay names=hlfb-timedelay,spindle-on-delay
 loadrt sum2 names=y-atc-offset
 loadrt or2 names=mpg-mode-or,tchg-or,probe-or
 loadrt not names=pendant-not
 loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2,estop-and
 loadrt debounce cfg=1
 addf debounce.0 servo-thread
+addf spindle-on-delay servo-thread
+addf s_interlock servo-thread
+setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 397.0
+
 
 setp debounce.0.delay 50
 
@@ -32,15 +37,14 @@ addf mpg-and2 servo-thread
 addf y-atc-offset servo-thread
 
 # HLFB
-loadrt timedelay count=1
-addf timedelay.0 servo-thread
+addf hlfb-timedelay servo-thread
 addf hlfb-and2 servo-thread
 
-net on-sig motion.motion-enabled timedelay.0.in
-setp timedelay.0.on-delay .1
-setp timedelay.0.off-delay 0
+net on-sig motion.motion-enabled hlfb-timedelay.in
+setp hlfb-timedelay.on-delay .1
+setp hlfb-timedelay.off-delay 0
 
-net machine-is-enabled timedelay.0.out
+net machine-is-enabled hlfb-timedelay.out
 
 addf x-hlfb-and2 servo-thread
 addf y-hlfb-and2 servo-thread
@@ -126,11 +130,7 @@ net coolant-mist  =>     hm2_7i76e.0.7i76.0.0.output-06
 # --- COOLANT-FLOOD ---
 net coolant-flood  =>     hm2_7i76e.0.7i76.0.0.output-08
 
-# --- SPINDLE-CW ---
-net spindle-cw  =>     hm2_7i76e.0.7i76.0.0.output-09
-
 # external input signals
-
 
 # --- BOTH-HOME-X ---
 net both-home-x     <=  hm2_7i76e.0.7i76.0.0.input-16-not
@@ -147,8 +147,11 @@ net max-home-y2     <=  hm2_7i76e.0.7i76.0.0.input-19-not
 # --- MAX-HOME-Z ---
 net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-20-not
 
+net spindle-fault  <=  hm2_7i76e.0.7i76.0.0.input-21 => spindle.0.amp-fault-in
+
 # --- AIR PRESURE ---
 net air-presure    <=  hm2_7i76e.0.7i76.0.0.input-04 => motion.digital-in-00
+net n_air-presure  <=  hm2_7i76e.0.7i76.0.0.input-04-not
 
 # --- ESTOP-EXT ---
 net estop-ext-or     <=  hm2_7i76e.0.7i76.0.0.input-05 => estop-and.in0 
@@ -157,7 +160,8 @@ net estop-ext-or     <=  hm2_7i76e.0.7i76.0.0.input-05 => estop-and.in0
 #net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
 # --- TOUCH PROBE-IN (Z-PROBE) ---
-net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => probe-or.in0
+#net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => probe-or.in0
+net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06 => probe-or.in0
 net probe-or-sig     <=  probe-or.out => dsmono.0.in
 
 net probe-in <= dsmono.0.out
@@ -172,8 +176,8 @@ net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08 => estop-and.in1
 
 # --- TOOL CHANGE BUTTON IN ---
 net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09 => tchg-or.in1
-net tchg-out-net <= tchg-or.out => tchg-out
-
+net tchg-out-net <= tchg-or.out => s_interlock.release-request
+net tchg-interlock-out s_interlock.release-out  => tchg-out
 
 # --- AUX-IN ---
 net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-10
@@ -405,11 +409,11 @@ setp   pid.s.deadband  [SPINDLE_0]DEADBAND
 setp   pid.s.maxoutput [SPINDLE_0]MAX_OUTPUT
 setp   pid.s.error-previous-target true
 
-net spindle-index-enable  => pid.s.index-enable
-net spindle-enable        =>  pid.s.enable
+net spindle-index-enable    => pid.s.index-enable
+net spindle-is-on-interlock =>  pid.s.enable
 net spindle-vel-cmd-rpm     => pid.s.command
 net spindle-vel-fb-rpm      => pid.s.feedback
-net spindle-output        <=  pid.s.output
+net spindle-output          <=  pid.s.output
 
 # ---digital potentionmeter output signals/setup---
 
@@ -417,7 +421,9 @@ setp   hm2_7i76e.0.7i76.0.0.spinout-minlim    [SPINDLE_0]OUTPUT_MIN_LIMIT
 setp   hm2_7i76e.0.7i76.0.0.spinout-maxlim    [SPINDLE_0]OUTPUT_MAX_LIMIT
 setp   hm2_7i76e.0.7i76.0.0.spinout-scalemax  [SPINDLE_0]OUTPUT_SCALE
 
-net spindle-output      => hm2_7i76e.0.7i76.0.0.spinout
+#net spindle-output     => hm2_7i76e.0.7i76.0.0.spinout
+net spindle-output      => s_interlock.spindle-speed-in
+net interlock-spindle-output    s_interlock.spindle-speed-out  => hm2_7i76e.0.7i76.0.0.spinout
 net spindle-enable      => hm2_7i76e.0.7i76.0.0.spinena
 net spindle-ccw         => hm2_7i76e.0.7i76.0.0.spindir
 
@@ -427,7 +433,6 @@ net spindle-vel-cmd-rps        <=  spindle.0.speed-out-rps
 net spindle-vel-cmd-rps-abs    <=  spindle.0.speed-out-rps-abs
 net spindle-vel-cmd-rpm        <=  spindle.0.speed-out
 net spindle-vel-cmd-rpm-abs    <=  spindle.0.speed-out-abs
-net spindle-enable             <=  spindle.0.on
 net spindle-cw                 <=  spindle.0.forward
 net spindle-ccw                <=  spindle.0.reverse
 net spindle-brake              <=  spindle.0.brake
@@ -439,7 +444,13 @@ net spindle-index-enable      <=>  spindle.0.index-enable
 # ---Setup spindle at speed signals---
 
 sets spindle-at-speed true
-
+setp spindle-on-delay.on-delay 0
+setp spindle-on-delay.off-delay 5
+net spindle-is-on-interlock <= spindle.0.on
+net spindle-is-on-interlock => spindle-on-delay.in
+net spindle-is-on-interlock => s_interlock.spindle-enable-in
+net spindle-enable-delayed spindle-on-delay.out => s_interlock.encoder-counts
+net spindle-enable s_interlock.spindle-enable-out
 
 #******************************
 # connect miscellaneous signals
@@ -499,4 +510,3 @@ net estop-ext     =>  estop-and.out => iocontrol.0.emc-enable-in
 #net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
 #net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
 #net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
-

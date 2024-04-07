@@ -13,7 +13,7 @@ net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
 
 # *** Probe graphic simulation trigger push probe tip ***
 #net probe-in  =>  qtpyvcp.probe-in.out
-net probe-out  <=  qtpyvcp.probe-led.on
+net probe-in =>  qtpyvcp.probe-led.on
 
 # *** Set line below for actual spindle readout from your hal file ***
 #net spindle-rpm-filtered scale_to_rpm.out  =>  qtpyvcp.spindle-encoder-rpm.in
@@ -248,3 +248,12 @@ net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
 net tool-number             =>  qtpyvcp_manualtoolchange.number
         
 net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
+
+net spindle-max_rpm  s_interlock.limit halui.tool.length_offset.u
+
+setp qtpyvcp.air-psi-led.flash-rate 250
+net n_air-presure => qtpyvcp.air-psi-led.on
+net n_air-presure => qtpyvcp.air-psi-led.flash
+net tchg-interlock-out => qtpyvcp.drawbar-led.on
+net spindle-load-net => qtpyvcp.spindle-load-indicator.in-f hm2_7i76e.0.7i76.0.0.analogin0
+setp qtpyvcp.spindle-load-indicator.max-val 135

@@ -143,13 +143,24 @@ class CustomProbeBasic(ProbeBasic):
         self.horizontalLayout_19.setObjectName("horizontalLayout_19")
         self.verticalLayout_49.insertLayout(4, self.horizontalLayout_19, 0)
 
+        self.horizontalLayout_20 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_20.setContentsMargins(2,2,2,2)
+        self.horizontalLayout_20.setSpacing(6)
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.verticalLayout_10.insertLayout(6, self.horizontalLayout_20, 0)
 
         self.tool_rack_button = SubCallButton(None, filename="store_tool_in_rack.ngc")
         self.tool_rack_button.setText("Store Tool in Rack")
+
+        self.tool_rack_button2 = SubCallButton(None, filename="store_tool_in_rack.ngc")
+        self.tool_rack_button2.setText("Store Tool in Rack")
+
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tool_rack_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.tool_rack_button2.sizePolicy().hasHeightForWidth())
         self.tool_rack_button.setSizePolicy(sizePolicy)
         self.tool_rack_button.setMinimumSize(QtCore.QSize(120, 45))
         self.tool_rack_button.setMaximumSize(QtCore.QSize(16777215, 45))
@@ -162,6 +173,29 @@ class CustomProbeBasic(ProbeBasic):
 "    font-size: 16pt;\n"
 "}\n")
         self.horizontalLayout_19.addWidget(self.tool_rack_button)
+
+
+        self.tool_rack_button2.setSizePolicy(sizePolicy)
+        self.tool_rack_button2.setMinimumSize(QtCore.QSize(120, 45))
+        self.tool_rack_button2.setMaximumSize(QtCore.QSize(16777215, 45))
+        self.tool_rack_button2.setMouseTracking(True)
+        self.tool_rack_button2.setTabletTracking(False)
+        self.tool_rack_button2.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.tool_rack_button2.setObjectName("tool_rack_button2")
+        self.tool_rack_button2.setStyleSheet("QPushButton {\n"
+"    font-family: \"Bebas Kai\";\n"
+"    font-size: 16pt;\n"
+"}\n")
+        self.horizontalLayout_20.addWidget(self.tool_rack_button2)
+
+        self.atc_fwd_button.hide()
+        self.atc_fwd_button_2.hide()
+        self.atc_rev_button.hide()
+        self.atc_rev_button_2.hide()
+        self.store_tool_in_spindle.hide()
+        self.reference_carousel_2.hide()
+        self.tabWidget_33.setTabVisible(1,False)
+        self.dynatc.atc_message("");
 
         self.dialogbutton = DialogButton(self.frame_26)
         self.dialogbutton.setText("Shutdown System")
@@ -289,7 +323,7 @@ class CustomProbeBasic(ProbeBasic):
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: self.main_load_gcode_button.setEnabled(True))
 
         self.filesystemtable.rootChanged.connect(lambda: self.main_folder_up_button.setEnabled(False) 
-           if self.filesystemtable.model.rootPath().lower() == '/home/avidcnc/linuxcnc/nc_files/users'
+           if self.filesystemtable.model.rootPath().lower() == '/home/knoxmakers/linuxcnc/nc_files/users'
            else self.main_folder_up_button.setEnabled(True))
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: (
            self.main_load_gcode_button.setText("SELECT FOLDER") if not x else None,

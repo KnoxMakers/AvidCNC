@@ -1,9 +1,9 @@
 o<go_to_home> sub
-
+ M73
+ G20
  G90
  G53 G0 Z0
- G53 G0 X0 Y0
-
+ G53 G0 X#<_ini[AXIS_X]MAX_LIMIT> Y#<_ini[AXIS_Y]MAX_LIMIT_ADJUSTED>
 o<go_to_home> endsub
 
 M2
