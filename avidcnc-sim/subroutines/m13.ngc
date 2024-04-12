@@ -10,8 +10,8 @@ o<m13> sub
 ;(DEBUG, EVAL[vcp.getWidget{"dynatc"}.atc_message{}])
 
 #<number_of_pockets> = 12
-o110 if [EXISTS[#<_ini[atc]pockets>]]
-    #<number_of_pockets> = #<_ini[atc]pockets>
+o110 if [EXISTS[#<_ini[atc]numpockets>]]
+    #<number_of_pockets> = #<_ini[atc]numpockets>
 o110 endif
 
 #1 = 0

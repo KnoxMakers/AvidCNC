@@ -17,8 +17,8 @@ o<load_spindle_safety_2> sub
 
 ; default to a 12 pocket ATC (matching DynATC Widget behaviour), then update based on INI settings
 #<number_of_pockets> = 12
-o101 if [EXISTS[#<_ini[atc]pockets>]]
-    #<number_of_pockets> = #<_ini[atc]pockets>
+o101 if [EXISTS[#<_ini[atc]numpockets>]]
+    #<number_of_pockets> = #<_ini[atc]numpockets>
 o101 endif
 
 #10 = 0
@@ -36,7 +36,7 @@ o130 if [#11 EQ 0]
     G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
     G53 G0 Z[#<_ini[ATC]CHANGEZ>]
     ;M61 Q#<load_spindle_tool_number_2> G43 H#<load_spindle_tool_number_2>
-    M6 T#<load_spindle_tool_number> G43 H#<load_spindle_tool_number>
+    M6 T#<load_spindle_tool_number_2> G43 H#<load_spindle_tool_number_2>
     #3991 = #<load_spindle_tool_number_2>
 o130 endif
 

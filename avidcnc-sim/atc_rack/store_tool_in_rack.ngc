@@ -13,7 +13,7 @@ G49
 
 #<number_of_pockets> = 12
 o110 if [EXISTS[#<_ini[atc]pockets>]]
-    #<number_of_pockets> = #<_ini[atc]pockets>
+    #<number_of_pockets> = #<_ini[atc]numpockets>
 o110 endif
 
 #<_check_pocket> = #[4000 + #<_current_pocket>]
