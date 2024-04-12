@@ -45,9 +45,9 @@ M66 E0 L0
 ; Ensure everything that we do is done in absolute coordinates
 G90
 ; Cutter comp off, otherwise G53 might go wrong
-;G40
+G40
 ; Cancel tool offset (not needed until the end)
-;G43
+G49
 ; Set the Y limit so we can get to the tool rack area
 M68 E00 Q#<_ini[AXIS_Y]MAX_LIMIT_ADDITIONAL>
 ; Pause for a tad to let the limit change happen
