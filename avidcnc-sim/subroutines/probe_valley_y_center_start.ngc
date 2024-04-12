@@ -71,7 +71,7 @@ o<probe_valley_y_center_start> sub
 
   (Probe Completion Move to Z Clearance Plane, and X Zero)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<y_center_probed>]
 
   (probe mode rules for WCO or probe position measuring only)

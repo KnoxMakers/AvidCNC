@@ -53,7 +53,7 @@ o<Probe_top_right_edge_angle> sub
 
   (Probe X Positioning Move, Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<step_off_width>]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -99,10 +99,10 @@ o<Probe_top_right_edge_angle> sub
 
   (Probe Completion Move to Z Clearance Plane, and Y Zero)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_minus_zero_edge_start>] Y[#<y_start_position>]
 
   (probe mode rules for WCO, Rotation and probe position measuring only)

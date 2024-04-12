@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 import sys
 
 def update_tool_table(tool_number, new_pocket_number):

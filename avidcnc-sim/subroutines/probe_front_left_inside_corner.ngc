@@ -51,7 +51,7 @@ o<probe_front_left_inside_corner> sub
 
   (Probe X Positioning Move, Traverse Workpiece Top at Z Clearance Height plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<step_off_width>] Y[#<step_off_width>]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -75,7 +75,7 @@ o<probe_front_left_inside_corner> sub
 
   (move to X start Position)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_start>]
 
   (Current Y Position including offsets in current program units)
@@ -94,15 +94,15 @@ o<probe_front_left_inside_corner> sub
 
   (move to Y start Position)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<y_start>]
 
   (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_minus_zero_edge>] Y[#<y_minus_zero_edge>]
 
   (probe mode rules for WCO or probe position measuring only)

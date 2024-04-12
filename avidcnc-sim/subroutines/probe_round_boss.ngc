@@ -60,7 +60,7 @@ o<probe_round_boss> sub
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -74,12 +74,12 @@ o<probe_round_boss> sub
 
   (first side Probe Completion Move to Z Clearance Plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (Positioning move in X, X Hint + Step Off Width at Rapid Speed)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<diameter_hint> + #<step_off_width> + #<xy_clearance>]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -98,15 +98,15 @@ o<probe_round_boss> sub
   (DEBUG, EVAL[vcp.getWidget{"x_center_probed"}.setValue{#1002}])
 
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_center_probed>]
 
   (Probe Y Positioning Move, Y hint/2 + Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe Y Positioning Move, to Probing Depth)
@@ -120,17 +120,17 @@ o<probe_round_boss> sub
 
   (first side Probe Completion Move to Z Clearance Plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (Positioning move in Y, Y Hint + Step Off Width at Rapid Speed)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<diameter_hint> + #<step_off_width> + #<xy_clearance>]
 
   (Probe Y Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z-[#<z_probe_stack>]
 
   (Call sub "probe_y_minus" to Probe y- side of Workpiece)
@@ -146,17 +146,17 @@ o<probe_round_boss> sub
 
   (Move to z clearance plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (Move to Y Center)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<y_center_probed>]
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -170,11 +170,11 @@ o<probe_round_boss> sub
 
   (first side Probe Completion Move to Z Clearance Plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (Positioning move in X, X Hint + Step Off Width at Rapid Speed)
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<diameter_hint> + #<step_off_width> + #<xy_clearance>]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -206,15 +206,15 @@ o<probe_round_boss> sub
   (DEBUG, EVAL[vcp.getWidget{"x_center_probed"}.setValue{#1002}])
 
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_center_probed>]
 
   (Probe Y Positioning Move, Y hint/2 + Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe Y Positioning Move, to Probing Depth)
@@ -228,16 +228,16 @@ o<probe_round_boss> sub
 
   (first side Probe Completion Move to Z Clearance Plane)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (Positioning move in Y, Y Hint + Step Off Width at Rapid Speed)
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<diameter_hint> + #<step_off_width> + #<xy_clearance>]
 
   (Probe Y Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z-[#<z_probe_stack>]
 
   (Call sub "probe_y_minus" to Probe y- side of Workpiece)
@@ -270,10 +270,10 @@ o<probe_round_boss> sub
   (DEBUG, EVAL[vcp.getWidget{"averaged_diam"}.setValue{#1010}])
 
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_center_probed>] Y[#<y_center_probed>]
 
   #<x_zero> = [#<x_center_probed> + #<workspace_x>]

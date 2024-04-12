@@ -1,0 +1,10 @@
+o<m301> sub
+
+;CALL update_tool_table.py {#<t>} {#<p>}
+(print, Test #<t> #<p>)
+EXEC ["python3", "/home/linuxcnc/avidcnc-sim/subroutines/update_tool_table.py", "#<t>", "#<p>"]
+G10 L0
+
+o<m301> endsub
+
+M2

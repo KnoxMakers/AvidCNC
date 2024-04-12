@@ -53,7 +53,7 @@ o<probe_round_pocket> sub
 
   (Probe X Positioning Move, Step Off Width)
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<step_off_width>]
 
   (Probe X Positioning Move, to Probing Depth)
@@ -78,7 +78,7 @@ o<probe_round_pocket> sub
 
   (Probe Completion Move to Z Clearance Plane, and X Zero)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_center_probed>]
 
   (Call sub "probe_y_plus" to Probe Y+)
@@ -99,7 +99,7 @@ o<probe_round_pocket> sub
 
   (Probe Completion Move to Z Clearance Plane, Y Zero)
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<y_center_probed>]
 
   (Call sub "probe_x_minus" to Probe x-)
@@ -128,7 +128,7 @@ o<probe_round_pocket> sub
   (DEBUG, EVAL[vcp.getWidget{"x_center_probed"}.setValue{#1002}])
 
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 X[#<x_center_probed>]
 
   (Call sub "probe_y_plus" to Probe Y+)
@@ -162,10 +162,10 @@ o<probe_round_pocket> sub
   (DEBUG, EVAL[vcp.getWidget{"averaged_diam"}.setValue{#1010}])
 
   G90
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Y[#<y_center_probed>]
   G91
-  F[#<max_vel_slider>]
+  F#<_ini[TOOLSENSOR]RAPID_SPEED>
   G38.3 Z[#<z_probe_stack>]
 
   (probe mode rules for WCO or probe position measuring only)
