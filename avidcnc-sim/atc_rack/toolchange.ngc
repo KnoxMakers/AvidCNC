@@ -123,6 +123,7 @@ O200 elseif [#<oldtool> GT 0]
             (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<oldpocket>, #<oldtool>}])
             #[4000 + #<oldpocket>] = #<oldtool> ; save tool number in pocket
             #3991 = 0 ; empty tool in the spindle
+            #<oldtool> = 0;
         O220 else
             ; The tool's pocket number is not within the range of the rack, or it's pocket is occupied, the tool needs to be removed manually
             ; Tool is still at safe Z height from before
@@ -141,6 +142,7 @@ O200 elseif [#<oldtool> GT 0]
             M6 T0
             (PRINT, TOOLCALL: #<oldpocket>, #<oldtool>)
             #3991 = 0 ; empty tool in the spindle
+            #<oldtool> = 0;
         o220 endif
     (print,  We are now without a tool at some position either safely above pocket or the manual change position)
 
@@ -168,7 +170,7 @@ O300 elseif [#<newtool> GT 0]
         O320 if [#<newpocket> LE #<_ini[ATC]NUMPOCKETS> and #<_check_pocket> eq #<newtool>]
             ; Tool within rack range, triggering get tool from rack, assuming that the pocket is filled
             (print, Getting tool #<newtool> from rack at pocket #<newpocket>)
-
+            (print, Old Tool # #<tool_in_spindle>, Pocket:#<_check_pocket>)
             ; If we don't have a old tool or we're coming back from a manual tool change
             ; we need to move Y into pickup position
             O330 if [#<oldtool> LE 0 OR [#<oldpocket> GT #<_ini[ATC]NUMPOCKETS>] ]
@@ -220,6 +222,7 @@ O300 elseif [#<newtool> GT 0]
             (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<newpocket>, 0}])
             #[4000 + #<newpocket>] = 0 ; empty the pocket
             #3991 = #<newtool> ; empty tool in the spindle
+            #<oldtool> = 0;
         O320 else
             ; The tool's pocket number is not within the range of the rack and the tool needs to picked up at the manual change position
             (print, Selected pocket is not within range, moving to manual pick up)
