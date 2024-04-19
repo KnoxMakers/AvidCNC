@@ -32,13 +32,35 @@ M9 ; turn off Vacuum / Air Blast
 
 #<newtool> = #<selected_tool>
 #<oldtool> = #<tool_in_spindle>
-;#<oldpocket> = #5190
-#<oldpocket> = #<_current_pocket>
 ; call upon iocontrol.0.tol-prep-pocket via M66 and have it stored in #5399
 M66 E0 L0
-;#<newpocket> = #5399
-#<newpocket> = #<_selected_pocket>
 #5190=#5399
+#130 = 1
+#<open_pocket> = 0
+
+#<newpocket> = 0
+O50 while [#130 LE #<_ini[ATC]NUMPOCKETS>]
+    O55 if [#[4000 + #130] EQ #<newtool>] ; checks if the pocket has the tool
+        #<newpocket> = #130
+        ;O50 break
+	(PRINT, OPEN POCKET FOUND)
+    O55 endif
+    (PRINT, LOOP COUNT %d#130)
+    #130 = [#130 + 1]
+O50 endwhile  
+#130 = 1
+
+O60 while [#130 LE #<_ini[ATC]NUMPOCKETS> AND #<open_pocket> EQ 0 AND #3992 EQ 0]
+    O65 if [#[4000 + #130] EQ 0] ; checks if the pocket is empty, last pocket checked will be the lowest empty pocket number, for putting tool in >
+        #<open_pocket> = #130
+	(PRINT, OPEN POCKET FOUND)
+        ;O60 break
+    O65 endif
+    (PRINT, LOOP COUNT %d#130)
+    #130 = [#130 + 1]
+O60 endwhile  
+#<oldpocket> = #<open_pocket>
+(print, manual tool change state = #3992)
 (print, oldtool=#<oldtool> oldpocket=#<oldpocket>)
 (print, newtool=#<newtool> newpocket=#<newpocket>)
 
@@ -64,14 +86,15 @@ O200 if [#<oldtool> EQ #<newtool>]
     (print, do absolutly nothing)
 O200 elseif [#<oldtool> GT 0]
     (print, Tool No  #<oldtool> is in the spindle - we need to put it away)
-    ; Check if oldpocket is within range
-    O210 if [#<oldpocket> GT 0]
-        #<_check_pocket> = #[4000 + #<_current_pocket>]
-        O220 if [#<oldpocket> LE #<_ini[ATC]NUMPOCKETS> and #<_check_pocket> eq 0]  ; Pocket in range, and pocket is empty.
+    ; Check if oldpocket is within range // I don't think we need to do this
+    ;O210 if [#<oldpocket> GT 0] 
+        ;#<_check_pocket> = #[4000 + #<_current_pocket>]
 
-            o120 if [#<_check_pocket> GT 0]
-                (ABORT, Pocket P%d#<_current_pocket> is already occupied with Tool T%d#<_check_pocket>. Please check the pocket number in the tool table)
-            o120 endif
+        O220 if [#<oldpocket> GT 0]  ; Pocket in range, and pocket is empty.
+
+            ;o120 if [#<_check_pocket> GT 0]
+            ;    (ABORT, Pocket P%d#<_current_pocket> is already occupied with Tool T%d#<_check_pocket>. Please check the pocket number in the tool table)
+            ;o120 endif
 
             ;Tool within range, triggering put move to rack, assuming that the pocket is empty!
              (print, Putting tool away into rack in pocket #<oldpocket>)
@@ -101,7 +124,9 @@ O200 elseif [#<oldtool> GT 0]
             O230 endif
 
             G01 G53 M62 P #<_ini[ATC_PINS]ATC_OPEN> Z #<_ini[ATC]OFF_HEIGHT_Z> F#<_ini[ATC]DROPSPEEDZ> 
-            G4 P0.2
+            (PRINT, PUT TOOL BACK: #<oldpocket>, #<oldtool>)
+            (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<oldpocket>, #<oldtool>}])
+            ;G4 P0.2 ;;Original Delay
 
             ; Move back to safe Z above the oldpocket
             G53 G01 Z [#<_ini[ATC]FIRSTPOCKET_Z> + #<_ini[ATC]SAFE_Z>] F#<_ini[ATC]DROPSPEEDRAPID> 
@@ -116,13 +141,13 @@ O200 elseif [#<oldtool> GT 0]
 
             ; We didn't don't have a new tool to pick up, so clear the rack
             O225 if [#<newtool> EQ 0]
+                (print, No New Tool to pick up)
                 G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
                 G53 G0 Y#<_ini[ATC]CLEARRACK_Y>
             O225 endif
-            (PRINT, PUT TOOL BACK: #<oldpocket>, #<oldtool>)
-            (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<oldpocket>, #<oldtool>}])
             #[4000 + #<oldpocket>] = #<oldtool> ; save tool number in pocket
             #3991 = 0 ; empty tool in the spindle
+            #3992 = 0 ; This was a auto tool change
             #<oldtool> = 0;
         O220 else
             ; The tool's pocket number is not within the range of the rack, or it's pocket is occupied, the tool needs to be removed manually
@@ -142,11 +167,12 @@ O200 elseif [#<oldtool> GT 0]
             M6 T0
             (PRINT, TOOLCALL: #<oldpocket>, #<oldtool>)
             #3991 = 0 ; empty tool in the spindle
+            #3992 = 1 ; This was a manual tool change
             #<oldtool> = 0;
         o220 endif
     (print,  We are now without a tool at some position either safely above pocket or the manual change position)
 
-    O210 endif
+    ;O210 endif
 O200 else
     ; There is nothing to do here but end the conditional
     (print, There is no tool in the spindle - No action required at this time)
@@ -164,16 +190,16 @@ O300 elseif [#<newtool> GT 0]
     ; Tool is GT 0 and we thus need to get a tool from somewhere
     (print, New tool: #<newtool> needs to be picked up from #<newpocket>)
     ; Again, check if #newpocket is within range of the tool rack, otherwise pick at manual change position and measure
-    O310 if [#<newpocket> GT 0]
+    ;O310 if [#<newpocket> GT 0]
     ; Check only for error handling
-        #<_check_pocket> = #[4000 + #<newpocket>]
-        O320 if [#<newpocket> LE #<_ini[ATC]NUMPOCKETS> and #<_check_pocket> eq #<newtool>]
+        O320 if [#<newpocket> LE #<_ini[ATC]NUMPOCKETS> AND #<newpocket> GT 0]
             ; Tool within rack range, triggering get tool from rack, assuming that the pocket is filled
             (print, Getting tool #<newtool> from rack at pocket #<newpocket>)
-            (print, Old Tool # #<tool_in_spindle>, Pocket:#<_check_pocket>)
+            (print, Old Tool # #<tool_in_spindle>, Pocket:#<oldpocket>)
             ; If we don't have a old tool or we're coming back from a manual tool change
             ; we need to move Y into pickup position
-            O330 if [#<oldtool> LE 0 OR [#<oldpocket> GT #<_ini[ATC]NUMPOCKETS>] ]
+            O330 if [#<oldpocket> EQ 0 OR [#<newpocket> GT #<_ini[ATC]NUMPOCKETS>] ]
+               (print, Safety check, %d Old Tool: #<oldtool>, %d Old Pocket #<oldpocket>)
                ; Safety check
                G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1] 
                G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>]
@@ -187,7 +213,7 @@ O300 elseif [#<newtool> GT 0]
             ; first move X
             G53 G01 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X>] F#<_ini[ATC]DROPSPEEDXY>
 
-            G4 P #<_ini[ATC]WAITSPINDLE>            (print, above  pocket #<newpocket>, opening drawbar)
+            ; original delay ;G4 P #<_ini[ATC]WAITSPINDLE>            (print, above  pocket #<newpocket>, opening drawbar)
 
             ; open spindle (may already be open)
             M66 P0 L3 Q20
@@ -197,7 +223,7 @@ O300 elseif [#<newtool> GT 0]
             M64 P #<_ini[ATC_PINS]ATC_OPEN>
             ; third move Z partially rapid
             G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>] F#<_ini[ATC]DROPSPEEDRAPID>
-            G4 P0.2
+            ;;G4 P0.2 ; original delay
 
             ; close spindle with sycronized Z move
             M66 P0 L3 Q20
@@ -206,23 +232,25 @@ O300 elseif [#<newtool> GT 0]
             O250 endif
             G53 M63 P #<_ini[ATC_PINS]ATC_OPEN> G01 Z #<_ini[ATC]FIRSTPOCKET_Z> F#<_ini[ATC]DROPSPEEDZ> 
 
-            G4 P0.2
+            ;; original delay ;;G4 P.2
 
             ; Pull tool from rack
             G53 G00 Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y> + #<_ini[ATC]SAFE_Y>] 
 
-            ; Rapid Z to clearance
-            G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
-            (print, Moving finished, tool loaded, now tell linuxcnc about the toolchange using M61)
-
             ; Load tool number
             M61 Q#<newtool>
-            G53 G0 Y#<_ini[ATC]CLEARRACK_Y>
             (PRINT, TOOLCALL: #<newpocket>, 0)
             (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<newpocket>, 0}])
             #[4000 + #<newpocket>] = 0 ; empty the pocket
             #3991 = #<newtool> ; empty tool in the spindle
+            #3992 = 0 ; This was a auto tool change
             #<oldtool> = 0;
+
+            ; Rapid Z to clearance
+            G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
+            G53 G0 Y#<_ini[ATC]CLEARRACK_Y>
+            (print, Moving finished, tool loaded, now tell linuxcnc about the toolchange using M61)
+
         O320 else
             ; The tool's pocket number is not within the range of the rack and the tool needs to picked up at the manual change position
             (print, Selected pocket is not within range, moving to manual pick up)
@@ -242,8 +270,9 @@ O300 elseif [#<newtool> GT 0]
             (PRINT, TOOLCALL: #<newpocket>, 0)
             (print, A tool is manually loaded and we can continue with measurement)
             ;#3991 = #<newtool> ; empty tool in the spindle
+            #3992 = 1 ; This was a manual tool change
         O320 endif
-    O310 endif
+    ;O310 endif
 O300 endif
 
 ; Rest the limits back to normal
