@@ -33,9 +33,7 @@ o110 while [#10 LT #<number_of_pockets>]
 o110 endwhile
 
 o130 if [#11 EQ 0]
-    G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
-    G53 G0 Z[#<_ini[ATC]CHANGEZ>]
-    ;M61 Q#<load_spindle_tool_number> G43 H#<load_spindle_tool_number>
+    (print, loading the tool)
     M6 T#<load_spindle_tool_number> G43 H#<load_spindle_tool_number>
     #3991 = #<load_spindle_tool_number>
 o130 endif
