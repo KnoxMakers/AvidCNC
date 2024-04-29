@@ -99,9 +99,8 @@ O100 elseif [#<oldtool> GT 0]
           (abort, No ATC  Air Pressure) ; abort if no air pressure in 20 seconds
         O120 endif
 
-        G01 G53 M64 P #<_ini[ATC_PINS]ATC_OPEN> ; was M62
-        G4 P0.4 ;Original Delay
-        G01 G53 Z [#<_ini[ATC]OFF_HEIGHT_Z>] F[#<_ini[ATC]DROPSPEEDZ> ]
+        G01 G53 M62 P #<_ini[ATC_PINS]ATC_OPEN> Z [#<_ini[ATC]OFF_HEIGHT_Z>] F[#<_ini[ATC]DROPSPEEDZ> ]
+
         (PRINT, PUT TOOL BACK: #<open_pocket>, #<oldtool>)
         (DEBUG, EVAL[vcp.getWidget{"dynatc"}.store_tool{#<open_pocket>, #<oldtool>}])
 
@@ -117,8 +116,8 @@ O100 elseif [#<oldtool> GT 0]
         ; We didn't don't have a new tool to pick up, so clear the rack
         O115 if [#<newtool> EQ 0]
             (print, No New Tool to pick up)
-            M65 P #<_ini[ATC_PINS]ATC_OPEN> ; Close the drawbar if we're not picking up a new tool
-            G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
+            ; Close the drawbar if we're not picking up a new tool
+            M63 G53 P #<_ini[ATC_PINS]ATC_OPEN> G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
             G53 G0 Y#<_ini[ATC]CLEARRACK_Y>
         O115 endif
 
@@ -129,14 +128,8 @@ O100 elseif [#<oldtool> GT 0]
     O110 else
         ; The tool was not stored in the rack and needs to be removed manually
         ; Spindle is still at safe Z height from before
-        G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
-
-        ; Close Drawbar, Check air psi
-        M66 P0 L3 Q20
-        O130 if [#5399 LT 0]
-          (abort, No ATC  Air Pressure) ; abort if no air pressure in 20 seconds
-        O130 endif
         M65 P #<_ini[ATC_PINS]ATC_OPEN>
+        G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 
         ; Move Spindle to tool change position
         G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
@@ -165,6 +158,7 @@ O200 elseif [#<newtool> GT 0]
     ; Tool is GT 0 and we thus need to get a tool from somewhere
     (print, New tool: #<newtool> needs to be picked up from #<newpocket>)
     O210 if [#<newpocket> LE #<_ini[ATC]NUMPOCKETS> AND #<newpocket> GT 0]
+
         ; Tool is in the rack, triggering get tool from rack
 
         (print, Getting tool #<newtool> from rack at pocket #<newpocket>)
@@ -179,23 +173,18 @@ O200 elseif [#<newtool> GT 0]
            G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] Y[#<_ini[ATC]FIRSTPOCKET_Y> + [#<newpocket> -1] * #<_ini[ATC]DELTA_Y>]
         O230 endif
 
-        ; Move Z to save_z height, should be just above the pockets
-        G53 G0 Z [#<_ini[ATC]FIRSTPOCKET_Z> + #<_ini[ATC]SAFE_Z>]
-
         ; Move X 
         G53 G0 X[#<_ini[ATC]FIRSTPOCKET_X> + [#<newpocket> -1] * #<_ini[ATC]DELTA_X> - #<_ini[ATC]SAFE_X>] 
-        ;original delay ;G4 P #<_ini[ATC]WAITSPINDLE>            (print, above  pocket #<newpocket>, opening drawbar)
 
         ; open spindle (may already be open)
         M66 P0 L3 Q20
         O240 if [#5399 LT 0]
           (abort, No ATC  Air Pressure) ; abort if no air pressure in 20 seconds
         O240 endif
-        M64 P #<_ini[ATC_PINS]ATC_OPEN>
+        M64 P #<_ini[ATC_PINS]ATC_OPEN> 
 
-        ; Move Z down over tool too grab it
+        ; Move Z and open spindle (may already be open)
         G53 G01 Z[#<_ini[ATC]OFF_HEIGHT_Z>] F#<_ini[ATC]DROPSPEEDRAPID>
-        ;G4 P0.2 ; original delay
 
         ; Close spindle with sycronized Z move
         M66 P0 L3 Q20
@@ -227,14 +216,8 @@ O200 elseif [#<newtool> GT 0]
         ; The tool is not stored in the rack and needs to be manually installed
         (print, Selected pocket is not in the rack, moving to manual pick up)
         ; Rapid move to manual pick up position
-        G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
-
-        ; Close Drawbar, Check air psi
-        M66 P0 L3 Q20
-        O260 if [#5399 LT 0]
-          (abort, No ATC  Air Pressure) ; abort if no air pressure in 20 seconds
-        O260 endif
         M65 P #<_ini[ATC_PINS]ATC_OPEN>
+        G53 G0 Z[#<_ini[AXIS_Z]MAX_LIMIT>-0.1]
 
         ; Move Spindle to tool change position
         G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
