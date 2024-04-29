@@ -342,6 +342,9 @@ class CustomProbeBasic(ProbeBasic):
             self.main_load_gcode_button.setEnabled(False)
         ))
 
+        self.remove_current_tool.setProperty("MDICommand", _translate("Form", "#3992=1 M6 T0"))
+        self.remove_current_tool_3.setProperty("MDICommand", _translate("Form", "#3992=1 M6 T0"))
+
     #self.MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 
     def remove_browse_option(self):
