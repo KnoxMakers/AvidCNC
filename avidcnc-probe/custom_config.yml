@@ -3,23 +3,38 @@ windows:
   mainwindow:
     provider: custom_probebasic:CustomProbeBasic
     kwargs:
-      confirm_exit: true
+      confirm_exit: false
 
 data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
-        columns: TUXYZDR
+        columns: TZDUR
+
+  offsettable:
+    provider: qtpyvcp.plugins.offset_table:OffsetTable
+    kwargs:
+      columns: "XYZR"
+
+  file_locations:
+    provider: qtpyvcp.plugins.file_locations:FileLocations
+    log_level: debug
+    kwargs:
+      default_location: Users
+      local_locations:
+        # format: Location Name: path
+        Users: ~/linuxcnc/nc_files/USERS
+      network_locations:
 
 settings:
 
   # VTK backplot view settings
 
   backplot.show-grid:
-    default_value: false
+    default_value: true
 
   backplot.show-program-bounds:
-    default_value: false
+    default_value: true
 
   backplot.show-program-labels:
     default_value: false
@@ -28,7 +43,7 @@ settings:
     default_value: false
 
   backplot.show-machine-bounds:
-    default_value: false
+    default_value: true
 
   backplot.show-machine-labels:
     default_value: false
