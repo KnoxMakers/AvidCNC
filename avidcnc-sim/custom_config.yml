@@ -11,6 +11,11 @@ data_plugins:
     kwargs:
         columns: TZDUR
 
+  offsettable:
+    provider: qtpyvcp.plugins.offset_table:OffsetTable
+    kwargs:
+      columns: "XYZR"
+
   file_locations:
     provider: qtpyvcp.plugins.file_locations:FileLocations
     log_level: debug

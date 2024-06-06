@@ -1,23 +1,26 @@
-(author: Chris P)
-(version: 0.1)
-(date: 02/13/20)
+(author: Chris P, lwk)
+(version: 0.2)
+(date: 12/03/23)
 
 (programmable coolant subroutine for aiming the coolant nozzle)
-(settings for setup are located on probe basic setting page)
+(settings for setup are displayed on probe basic setting page)
 (in the programmable coolant constants container.)
-(calculations assume coolant nozzle is on axis b and has been homed)
-(to 0 degrees rotation aiming perpendicular to the spindle center line)
-(coolant nozzle is located on the right side of the spindle head and)
-(rotates counter clockwise from home position with commands)
+(calculations assume coolant nozzle is located on the right side of the spindle)
+
 
 o<program_coolant> sub
+(PRINT, o<program_coolant>)
 
-  (uses NGCGUI style arg spec)
-  (number after equals sign in comment is default value)
-  #<horizontal_spindle_nozzle_dist> = #1
-  #<vertical_spindle_nozzle_dist> = #2
-  #<pc_angle_offset> = #3
-  #<pc_tool_length> = #4
+  #<activate_programmable_coolant> = #3000
+  #<horizontal_spindle_nozzle_dist> = #3001
+  #<vertical_spindle_nozzle_dist> = #3002
+  #<pc_angle_offset> = #3003
+
+  o100 if [#<activate_programmable_coolant> EQ 0]
+    o100 return
+  o100 endif
+
+  #<pc_tool_length> = #5403
 
   #<tool_diameter> = #5410
 
@@ -36,6 +39,7 @@ o<program_coolant> sub
 
   M68 E20 Q[#<coolant_final_angle>]
 
+  (PRINT, o<program_coolant> endsub)
 o<program_coolant> endsub
 
 M2 (end program)

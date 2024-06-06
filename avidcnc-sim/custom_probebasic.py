@@ -47,6 +47,9 @@ class CustomProbeBasic(ProbeBasic):
         self.ini = ini(self.INI_FILE)
         self.pin = self.ini.find('DISPLAY', 'PIN') or "1234"
 
+        # Set Default tab
+        self.tabWidget.setCurrentIndex(0)
+
         # rename the Flood button
         self.flood_button.setText("Vaccum")
 
@@ -133,9 +136,9 @@ class CustomProbeBasic(ProbeBasic):
 
         self.frame_17.setMinimumSize(QtCore.QSize(250, 300))
         self.frame_17.setMaximumSize(QtCore.QSize(250, 300))
-        self.frame_17.setGeometry(QtCore.QRect(320, 80, 250, 300))
+        self.frame_17.setGeometry(QtCore.QRect(320, 18, 250, 300))
 
-        self.frame_18.setGeometry(QtCore.QRect(320, 385, 250, 150))
+        self.frame_18.setGeometry(QtCore.QRect(320, 323, 250, 150))
 
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_19.setContentsMargins(2,2,2,2)
@@ -188,10 +191,6 @@ class CustomProbeBasic(ProbeBasic):
 "}\n")
         self.horizontalLayout_20.addWidget(self.tool_rack_button2)
 
-        self.atc_fwd_button.hide()
-        self.atc_fwd_button_2.hide()
-        self.atc_rev_button.hide()
-        self.atc_rev_button_2.hide()
         self.store_tool_in_spindle.hide()
         self.reference_carousel_2.hide()
         self.tabWidget_33.setTabVisible(1,False)
@@ -211,10 +210,17 @@ class CustomProbeBasic(ProbeBasic):
 
         self.mdi_entry_box_4.hide()
 
+        self.frame_10.setGeometry(1110,30,530,339)
+        self.verticalLayout_76.setSpacing(4)
+        self.frame_14.setGeometry(1110,374,530,100)
+        self.verticalLayout_23.setSpacing(4)
+        self.frame_3.setGeometry(1110,478,530,70)
+        self.verticalLayout_62.setSpacing(4)
+
         self.lockScreen(self)
 
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
-        self.unlock_frame.setGeometry(1110, 550, 501, 80)
+        self.unlock_frame.setGeometry(1110, 550, 530, 60)
 
         self.unlock_layout = QtWidgets.QHBoxLayout(self.unlock_frame)
         self.unlock_layout.setContentsMargins(10,1,0,1)
@@ -323,7 +329,7 @@ class CustomProbeBasic(ProbeBasic):
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: self.main_load_gcode_button.setEnabled(True))
 
         self.filesystemtable.rootChanged.connect(lambda: self.main_folder_up_button.setEnabled(False) 
-           if self.filesystemtable.model.rootPath().lower() == '/home/avidcnc/linuxcnc/nc_files/users'
+           if self.filesystemtable.model.rootPath().lower() == '/home/knoxmakers/linuxcnc/nc_files/users'
            else self.main_folder_up_button.setEnabled(True))
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: (
            self.main_load_gcode_button.setText("SELECT FOLDER") if not x else None,
@@ -341,11 +347,6 @@ class CustomProbeBasic(ProbeBasic):
             self.filesystemtable.clearSelection(),
             self.main_load_gcode_button.setEnabled(False)
         ))
-
-        self.remove_current_tool.setProperty("MDICommand", _translate("Form", "#3992=1 M6 T0"))
-        self.remove_current_tool_3.setProperty("MDICommand", _translate("Form", "#3992=1 M6 T0"))
-
-    #self.MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 
     def remove_browse_option(self):
         for index in range(self.recentfilecombobox.count()):
@@ -390,31 +391,36 @@ class CustomProbeBasic(ProbeBasic):
         # hide the copy to usb button in file dialog
         self.copy_to_usb_2.hide()
 
-        # hide the tool setter screen
-        for child in self.widget_38.findChildren(QtWidgets.QWidget):
-            child.hide()
+        #lock tool probe fields
+        self.probe_tool_number_3014.setDisabled(True)
+        self.probe_tool_number_3014.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.probe_slow_fr_3015.setDisabled(True)
+        self.probe_slow_fr_3015.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.probe_fast_fr_3016.setDisabled(True)
+        self.probe_fast_fr_3016.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.probe_traverse_fr_3017.setDisabled(True)
+        self.probe_traverse_fr_3017.setStyleSheet("background-color: rgb(192, 192, 192);")
 
-        self.probe_tool_number.setDisabled(True)
-        self.probe_tool_number.setStyleSheet("background-color: rgb(192, 192, 192);")
-        self.probe_fast_fr.setDisabled(True)
-        self.probe_fast_fr.setStyleSheet("background-color: rgb(192, 192, 192);")
-        self.probe_slow_fr.setDisabled(True)
-        self.probe_slow_fr.setStyleSheet("background-color: rgb(192, 192, 192);")
+        # hide the tool setter screen
+        self.tabWidget_2.setTabVisible(1,False)
+
 
     def unlockScreen(self, *args, **kwargs):
-        # hide the usb frame
+        # show the usb frame
         self.frame_35.show()
 
-        # hide the copy to usb button in file dialog
+        # show the copy to usb button in file dialog
         self.copy_to_usb_2.show()
 
-        # hide the tool setter screen
-        for child in self.widget_38.findChildren(QtWidgets.QWidget):
-            child.show()
+        #unlock tool probe fields
+        self.probe_tool_number_3014.setDisabled(False)
+        self.probe_tool_number_3014.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.probe_slow_fr_3015.setDisabled(False)
+        self.probe_slow_fr_3015.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.probe_fast_fr_3016.setDisabled(False)
+        self.probe_fast_fr_3016.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.probe_traverse_fr_3017.setDisabled(False)
+        self.probe_traverse_fr_3017.setStyleSheet("background-color: rgb(255, 255, 255);")
 
-        self.probe_tool_number.setDisabled(False)
-        self.probe_tool_number.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.probe_fast_fr.setDisabled(False)
-        self.probe_fast_fr.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.probe_slow_fr.setDisabled(False)
-        self.probe_slow_fr.setStyleSheet("background-color: rgb(255, 255, 255);")
+        # show the tool setter screen
+        self.tabWidget_2.setTabVisible(1,True)
