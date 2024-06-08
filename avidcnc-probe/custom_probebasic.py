@@ -348,6 +348,15 @@ class CustomProbeBasic(ProbeBasic):
             self.main_load_gcode_button.setEnabled(False)
         ))
 
+        self.label_38.setStyleSheet("image: url(:/images/tool_probe_2.png);")
+        self.label_38.setGeometry(20,0,240,200)
+        self.label_50.setStyleSheet("image: url(:/images/tool_probe_2.png);")
+        self.label_50.setGeometry(230,400,171,131)
+        self.label_51.setStyleSheet("image: url(:/images/tool_probe_2.png);")
+        self.label_51.setGeometry(690,391,171,131)
+        self.label_55.setStyleSheet("image: url(:/images/tool_probe_2.png);")
+        self.label_55.setGeometry(690,320,171,131)
+
     def remove_browse_option(self):
         for index in range(self.recentfilecombobox.count()):
             if self.recentfilecombobox.itemText(index) == 'Browse for files ...':
