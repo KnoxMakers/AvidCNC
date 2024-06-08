@@ -208,7 +208,8 @@ class CustomProbeBasic(ProbeBasic):
 
         self.verticalLayout_50.setSpacing(11)
 
-        self.mdi_entry_box_4.hide()
+        self.mdi_entry_box_3.hide() #Always Hide
+        self.mdi_entry_box_4.hide() #Always Hide
 
         self.frame_10.setGeometry(1110,30,530,339)
         self.verticalLayout_76.setSpacing(4)
@@ -240,6 +241,8 @@ class CustomProbeBasic(ProbeBasic):
         self.unlock_line_edit_number.setProperty("textFormat", _translate("Form", "{:.0f}"))
         self.unlock_line_edit_number.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.unlock_line_edit_number.setText("0000")
+
+        self.unlock_line_edit_number.returnPressed.connect(self.unlock_button.click)
 
         self.status_led_frame = QtWidgets.QFrame(self.main_override_tool_qframe)
         self.status_led_layout = QtWidgets.QHBoxLayout(self.status_led_frame)
@@ -413,6 +416,11 @@ class CustomProbeBasic(ProbeBasic):
         # hide the tool setter screen
         self.tabWidget_2.setTabVisible(1,False)
 
+        # hide mdi enties
+        self.widget_50.hide()
+        self.Page1.setGeometry(0,0,700,565)
+        self.mdi_entry_box_5.hide()
+        self.mdi_entry_box_6.hide()
 
     def unlockScreen(self, *args, **kwargs):
         # show the usb frame
@@ -433,3 +441,10 @@ class CustomProbeBasic(ProbeBasic):
 
         # show the tool setter screen
         self.tabWidget_2.setTabVisible(1,True)
+
+        # show mdi entries 
+        self.widget_50.show()
+        self.Page1.setGeometry(0,0,756,565)
+        self.mdi_entry_box_5.show()
+        self.mdi_entry_box_6.show()
+
