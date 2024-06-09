@@ -13,6 +13,9 @@ net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
 #net spindle-vel => qtpyvcp.spindle-encoder-rpm.in
 net spindle-rpm-filtered scale_to_rpm.out  =>  qtpyvcp.spindle-encoder-rpm.in
 
+loadusr sim_pin a_low-psi.in0
+loadusr sim_pin motion.probe-input
+
 # *** set below for the status leds ***
 #net enter-hal-input-name-here  <=  qtpyvcp.1in1.on
 

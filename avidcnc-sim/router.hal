@@ -41,5 +41,3 @@ loadrt spindle_interlock names=s_interlock
 addf n_timer servo-thread
 addf n_air-psi servo-thread
 addf s_interlock servo-thread
-
-
