@@ -9,22 +9,12 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
-        columns: TZDUR
+        columns: TUZDR
 
   offsettable:
     provider: qtpyvcp.plugins.offset_table:OffsetTable
     kwargs:
       columns: "XYZR"
-
-  file_locations:
-    provider: qtpyvcp.plugins.file_locations:FileLocations
-    log_level: debug
-    kwargs:
-      default_location: Users
-      local_locations:
-        # format: Location Name: path
-        Users: ~/linuxcnc/nc_files/USERS
-      network_locations:
 
 settings:
 

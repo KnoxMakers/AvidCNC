@@ -148,6 +148,7 @@ net max-home-y2     <=  hm2_7i76e.0.7i76.0.0.input-19-not
 net max-home-z     <=  hm2_7i76e.0.7i76.0.0.input-20-not
 
 net spindle-fault  <=  hm2_7i76e.0.7i76.0.0.input-21 => spindle.0.amp-fault-in
+net spindle-at-speed  <=  hm2_7i76e.0.7i76.0.0.input-22
 
 # --- AIR PRESURE ---
 net air-presure    <=  hm2_7i76e.0.7i76.0.0.input-04 => motion.digital-in-00
@@ -442,8 +443,7 @@ net spindle-vel-fb-rps         =>  spindle.0.speed-in
 net spindle-index-enable      <=>  spindle.0.index-enable
 
 # ---Setup spindle at speed signals---
-
-sets spindle-at-speed true
+#sets spindle-at-speed true
 setp spindle-on-delay.on-delay 0
 setp spindle-on-delay.off-delay 5
 net spindle-is-on-interlock <= spindle.0.on
