@@ -16,6 +16,10 @@ o<tool_touch_off> sub
 
 G92.1    (Cancel G92 offset)
 
+M64 P #<_ini[ATC_PINS]CLEAN_TS>
+G4  P.5
+M65 P #<_ini[ATC_PINS]CLEAN_TS>
+
 #<workspace_z> = #5220
 
 #<tool_touch_x_coords> = #5181

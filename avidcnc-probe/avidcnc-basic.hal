@@ -21,6 +21,9 @@ addf spindle-on-delay servo-thread
 addf s_interlock servo-thread
 setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 397.0
 
+#Default block-delete to OFF
+setp halui.program.block-delete.off 1
+setp halui.program.block-delete.on 0
 
 setp debounce.0.delay 50
 

@@ -3,6 +3,7 @@ import sys
 
 from probe_basic.probe_basic import ProbeBasic
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.actions import program_actions
 from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
 from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
 from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
@@ -219,6 +220,13 @@ class CustomProbeBasic(ProbeBasic):
         self.verticalLayout_62.setSpacing(4)
 
         self.lockScreen(self)
+
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
 
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
         self.unlock_frame.setGeometry(1110, 550, 530, 60)

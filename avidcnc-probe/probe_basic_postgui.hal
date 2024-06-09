@@ -256,4 +256,5 @@ net n_air-presure => qtpyvcp.air-psi-led.on
 net n_air-presure => qtpyvcp.air-psi-led.flash
 net tchg-interlock-out => qtpyvcp.drawbar-led.on
 net spindle-load-net => qtpyvcp.spindle-load-indicator.in-f hm2_7i76e.0.7i76.0.0.analogin0
+net air-purge-net => qtpyvcp.case-air-led.on
 setp qtpyvcp.spindle-load-indicator.max-val 135
