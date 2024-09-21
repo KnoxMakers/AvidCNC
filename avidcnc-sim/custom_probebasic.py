@@ -141,6 +141,11 @@ class CustomProbeBasic(ProbeBasic):
 
         self.frame_18.setGeometry(QtCore.QRect(320, 323, 250, 150))
 
+        # Add Padding around VTK Buttons
+        self.verticalLayout_8.setContentsMargins(15, 18, 15, 12)
+        self.vtk_control_buttons.setMinimumSize(QtCore.QSize(105, 0))
+        self.vtk_control_buttons.setMaximumSize(QtCore.QSize(105, 16777215))
+
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_19.setContentsMargins(2,2,2,2)
         self.horizontalLayout_19.setSpacing(6)
@@ -209,7 +214,6 @@ class CustomProbeBasic(ProbeBasic):
 
         self.verticalLayout_50.setSpacing(11)
 
-        self.mdi_entry_box_3.hide() #Always Hide
         self.mdi_entry_box_4.hide() #Always Hide
 
         self.frame_10.setGeometry(1110,30,530,339)
@@ -220,14 +224,7 @@ class CustomProbeBasic(ProbeBasic):
         self.verticalLayout_62.setSpacing(4)
 
         self.lockScreen(self)
-
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-
+  
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
         self.unlock_frame.setGeometry(1110, 550, 530, 60)
 
@@ -340,7 +337,7 @@ class CustomProbeBasic(ProbeBasic):
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: self.main_load_gcode_button.setEnabled(True))
 
         self.filesystemtable.rootChanged.connect(lambda: self.main_folder_up_button.setEnabled(False) 
-           if self.filesystemtable.model.rootPath().lower() == '/home/knoxmakers/linuxcnc/nc_files/users'
+           if self.filesystemtable.model.rootPath().lower() == '/home/billy/linuxcnc/nc_files/users'
            else self.main_folder_up_button.setEnabled(True))
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: (
            self.main_load_gcode_button.setText("SELECT FOLDER") if not x else None,
@@ -427,6 +424,7 @@ class CustomProbeBasic(ProbeBasic):
         # hide mdi enties
         self.widget_50.hide()
         self.Page1.setGeometry(0,0,700,565)
+        self.mdi_entry_box_3.hide()
         self.mdi_entry_box_5.hide()
         self.mdi_entry_box_6.hide()
 
@@ -453,6 +451,6 @@ class CustomProbeBasic(ProbeBasic):
         # show mdi entries 
         self.widget_50.show()
         self.Page1.setGeometry(0,0,756,565)
+        self.mdi_entry_box_3.show()
         self.mdi_entry_box_5.show()
         self.mdi_entry_box_6.show()
-

@@ -1,0 +1,32 @@
+ root:
+    id: "base"
+    model: "nibblerbot.stl"
+    type: "table"
+    position: [0, 17.1751, -17.25, 0, 0, 0]
+    origin: [0, 0, 0]
+    axis: null
+    joint: null
+    child_linear:
+        id: "y_axis"
+        model: "nibblerbot-gantry.stl"
+        type: "linear"
+        position: [-0.1968, 9.811, -16.0, 0, 0, 0]
+        origin: [0, 0, 0]
+        axis: "y"
+        joint: 0
+        child_1a:
+            id: "x_axis"
+            model: "nibblerbot-x-axis.stl"
+            type: "linear"
+            position: [0, 4.75, -4.5, 0, 0]
+            origin: [0, 1, 1]
+            axis: "x"
+            joint: 1
+            child_2a:
+                id: "_axis"
+                model: "nibblerbot-z-axis.stl"
+                type: "linear"
+                position: [0, 4.75, -0.015, 0, 0, 0]
+                origin: [0, 1, 1]
+                axis: "z"
+                joint: 2
