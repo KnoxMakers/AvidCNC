@@ -10,10 +10,12 @@ from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
 from qtpyvcp.widgets.hal_widgets.hal_led import HalLedIndicator
+from qtpyvcp.widgets.dialogs.resume_dialog import ResumeDialog
+from qtpyvcp.widgets.dialogs.align_tool_dialog import AlignToolDialog
 from qtpyvcp.utilities.info import Info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from linuxcnc import ini
-
+from qtpyvcp.plugins import getPlugin
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -36,6 +38,9 @@ class CustomProbeBasic(ProbeBasic):
     def __init__(self, *args, **kwargs):
         super(CustomProbeBasic, self).__init__(*args, **kwargs)
         _translate = QtCore.QCoreApplication.translate
+        self.ResumeDialog = ResumeDialog()
+        self.AlignToolDialog = AlignToolDialog()
+        self.status = getPlugin('status')
 
         if self.INI_FILE is None:
             self.INI_FILE = ini_file or '/dev/null'
@@ -141,6 +146,7 @@ class CustomProbeBasic(ProbeBasic):
 
         self.frame_18.setGeometry(QtCore.QRect(320, 323, 250, 150))
 
+        # Add Padding around VTK Buttons
         self.verticalLayout_8.setContentsMargins(15, 18, 15, 12)
         self.vtk_control_buttons.setMinimumSize(QtCore.QSize(105, 0))
         self.vtk_control_buttons.setMaximumSize(QtCore.QSize(105, 16777215))
@@ -208,6 +214,15 @@ class CustomProbeBasic(ProbeBasic):
         self.dialogbutton.setObjectName("dialogbutton")
         self.verticalLayout_32.addWidget(self.dialogbutton)
 
+        self.resumebutton = DialogButton(self.frame_26)
+        self.resumebutton.setText("Resume")
+        self.resumebutton.setProperty("dialogName", "resume")
+        self.resumebutton.setMinimumSize(QtCore.QSize(0, 40))
+        self.resumebutton.setObjectName("resumebutton")
+        self.verticalLayout_32.addWidget(self.dialogbutton)
+        self.resumebutton.hide()
+
+
         self.verticalLayout_32.setSpacing(11)
         self.verticalLayout_32.setContentsMargins(9,6,9,6)
 
@@ -223,16 +238,7 @@ class CustomProbeBasic(ProbeBasic):
         self.verticalLayout_62.setSpacing(4)
 
         self.lockScreen(self)
-
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        #self.zoom_in_button.click()
-
-        self.machine_zoom_button.clicked.connect(self.zoom5x)
-
+  
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
         self.unlock_frame.setGeometry(1110, 550, 530, 60)
 
@@ -373,6 +379,18 @@ class CustomProbeBasic(ProbeBasic):
         self.label_55.setStyleSheet("image: url(:/images/tool_probe_2.png);")
         self.label_55.setGeometry(690,320,171,131)
 
+        self.vtk_model_button = VCPSettingsPushButton(self.sb_page_3)
+        sizePolicy.setHeightForWidth(self.vtk_model_button.sizePolicy().hasHeightForWidth())
+        self.vtk_model_button.setSizePolicy(sizePolicy)
+        self.vtk_model_button.setMinimumSize(QtCore.QSize(0, 40))
+        self.vtk_model_button.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.vtk_model_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.vtk_model_button.setObjectName("vtk_model_button")
+        # self.verticalLayout_40.addWidget(self.vtk_model_button)
+        self.verticalLayout_40.insertWidget(self.verticalLayout_40.indexOf(self.widget_101), self.vtk_model_button)
+        self.vtk_model_button.setText(_translate("Form", "MCH MODEL"))
+        self.vtk_model_button.setProperty("settingName", _translate("Form", "backplot.show-machine-model"))
+
     def remove_browse_option(self):
         for index in range(self.recentfilecombobox.count()):
             if self.recentfilecombobox.itemText(index) == 'Browse for files ...':
@@ -463,10 +481,13 @@ class CustomProbeBasic(ProbeBasic):
         self.mdi_entry_box_5.show()
         self.mdi_entry_box_6.show()
 
-    def zoom5x(self, *args, **kwargs):
-        self.vtk.setViewMachine
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
-        self.zoom_in_button.click()
+    def tool_touch_off(self):
+        self.AlignToolDialog.show()
+
+    def resume_feed(self):
+        self.ResumeDialog.show()
+
+    def m1_resume_feed(self):
+        if self.status.stat.optional_stop:
+            self.ResumeDialog.show()
+

@@ -1,6 +1,6 @@
-(author: Chris P, LWK)
-(version: 0.4)
-(date: 11/11/23)
+(author: Chris P)
+(version: 0.2)
+(date: 06/27/24)
 
 (load tool in spindle safety macro)
 ; This is called form the Tool page
@@ -33,10 +33,10 @@ o110 while [#10 LT #<number_of_pockets>]
 o110 endwhile
 
 o130 if [#11 EQ 0]
-    G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
     G53 G0 Z[#<_ini[ATC]CHANGEZ>]
+    G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
     ;M61 Q#<load_spindle_tool_number_2> G43 H#<load_spindle_tool_number_2>
-    M6 T#<load_spindle_tool_number_2> G43 H#<load_spindle_tool_number_2>
+    T#<load_spindle_tool_number_2> G43 H#<load_spindle_tool_number_2> M6
     #3991 = #<load_spindle_tool_number_2>
 o130 endif
 

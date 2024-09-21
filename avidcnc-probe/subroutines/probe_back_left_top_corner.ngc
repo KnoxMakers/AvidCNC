@@ -1,6 +1,6 @@
 (author: Chris P)
-(version: 0.1)
-(date: 04/25/19)
+(version: 0.2)
+(date: 06/27/24)
 
 (Probe back left top corner for x,y,z 0,0,0 position)
 (Start probe position is over back left corner of stock)
@@ -27,12 +27,16 @@ o<probe_back_left_top_corner> sub
   (Cancel G92 offsets)
   G92.1
 
+  (Cancel Feedrate Override)
+  M50 P0
+
   #<workspace_x> = #[5201 + [20 * #5220]]
   #<workspace_y> = #[5202 + [20 * #5220]]
 
   (Probe Tool Safety Check)
   o100 if [#5400 NE #<probe_tool_number>]
       (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
+      M50 P1
       o<probe_back_left_top_corner> return
   o100 endif
 
@@ -62,6 +66,7 @@ o<probe_back_left_top_corner> sub
   (value returned safety check, aborts if no value returned)
   o110 if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
       (MSG, Missing X Sub returned edge parameter, aborting)
+      M50 P1
       o<probe_back_left_top_corner> return
   o110 endif
 
@@ -86,6 +91,7 @@ o<probe_back_left_top_corner> sub
   (value returned safety check, aborts if no value returned)
   o120 if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
       (MSG, Missing Y Sub returned edge parameter, aborting)
+      M50 P1
       o<probe_back_left_top_corner> return
   o120 endif
 
@@ -102,8 +108,10 @@ o<probe_back_left_top_corner> sub
       (Record Zero in selected axes and WCO)
       G10 L2 P#5220 X[#<x_plus_zero_edge> + #<workspace_x>]
       G10 L2 P#5220 Y[#<y_minus_zero_edge> + #<workspace_y>]
-      o<probe_back_left_top_corner> return
   o130 endif
+
+  (Reinstate Feedrate Override)
+  M50 P1
 
 o<probe_back_left_top_corner> endsub
 

@@ -1,6 +1,6 @@
-(author: Chris P, lwk)
-(version: 0.2)
-(date: 12/03/23)
+(author: Chris P)
+(version: 0.3)
+(date: 06/27/24)
 
 (programmable coolant subroutine for aiming the coolant nozzle)
 (settings for setup are displayed on probe basic setting page)
@@ -37,7 +37,7 @@ o<program_coolant> sub
   #1000 = #<coolant_final_angle>
   (DEBUG, EVAL[vcp.getWidget{"coolant_final_angle"}.setValue{#1000}])
 
-  M68 E20 Q[#<coolant_final_angle>]
+  M68 E0 Q[#<coolant_final_angle>]
 
   (PRINT, o<program_coolant> endsub)
 o<program_coolant> endsub
