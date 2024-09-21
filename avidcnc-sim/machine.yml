@@ -2,7 +2,7 @@
     id: "base"
     model: "nibblerbot.stl"
     type: "table"
-    position: [0, 17.1751, -17.25, 0, 0, 0]
+    position: [0, 17.1751, -15.98, 0, 0, 0]
     origin: [0, 0, 0]
     axis: null
     joint: null
@@ -10,7 +10,7 @@
         id: "y_axis"
         model: "nibblerbot-gantry.stl"
         type: "linear"
-        position: [-0.1968, 9.811, -16.0, 0, 0, 0]
+        position: [-0.1968, 9.811, -14.73, 0, 0, 0]
         origin: [0, 0, 0]
         axis: "y"
         joint: 0

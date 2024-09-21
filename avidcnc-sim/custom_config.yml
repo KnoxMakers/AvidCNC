@@ -68,3 +68,6 @@ settings:
 
   backplot.multitool-colors:
     default_value: True
+
+  backplot.show-machine-model:
+    default_value: false

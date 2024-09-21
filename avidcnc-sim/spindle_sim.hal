@@ -52,7 +52,7 @@ addf lowpass_velocity servo-thread
 addf scale_to_rpm servo-thread
 
 # for at-speed detection
-loadrt near names=near_speed
+loadrt near names=near_speed,near-x,near-y
 addf near_speed servo-thread
 setp near_speed.scale 1.1
 setp near_speed.difference 10

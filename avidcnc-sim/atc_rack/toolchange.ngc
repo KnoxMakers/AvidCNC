@@ -13,7 +13,6 @@
 
 o<toolchange> sub
 ; we must execute this macro only in the milltask interpreter or preview will break, so test for '#<_task>' which is 1 for  the milltask interpreter and 0 in the UI's
-
 O10 if [#<_task> EQ 0]
     O10    return [999]
 O10 endif
@@ -25,15 +24,30 @@ M9 ; turn off Vacuum / Air Blast
 G90 ; Ensure everything that we do is done in absolute coordinates
 G40 ; Cutter comp off, otherwise G53 might go wrong
 G43 ; Cancel tool offset (not needed until the end)
-
-M68 E00 Q#<_ini[AXIS_Y]MAX_LIMIT_ADDITIONAL> ; Set the Y limit so we can get to the tool rack area
-G4  P.1 ; Pause for a tad to let the limit change happen
+M50 P0 ; Disable Feed Override - Timing is critcle on this tool change.
 
 (print, Storing tool and pocket information in local variables)
 #<newtool> = #<selected_tool>
 #<oldtool> = #<tool_in_spindle>
 #<open_pocket> = 0
 #<newpocket> = 0
+
+; #5000: 0 = First time we've run a program, x/#100 and y/#101 should be = 0 
+; #5000: 1 = Don't store current position
+; #5000: 2 = Don't know current postion, so default to x/#100=0 & y/#101=0, 
+; and set #5000 to 0 so we store it next time
+ 
+O20 if [#<oldtool> GT 0 AND #5000 EQ 0]
+    #100 = #<_abs_x>  (Store current X position in parameter 100)
+    #101 = #<_abs_y>  (Store current Y position in parameter 101)
+O20 elseif [#5000 EQ 2]
+    #100 = 0
+    #101 = 0
+    #5000 = 0
+O20 endif
+
+M68 E00 Q#<_ini[AXIS_Y]MAX_LIMIT_ADDITIONAL> ; Set the Y limit so we can get to the tool rack area
+G4  P.1 ; Pause for a tad to let the limit change happen
 
 ; Find the tool in the rack
 #130 = 1 ; Used for Loop Counter
@@ -62,6 +76,10 @@ O60 endwhile
 (print, manual tool change state = #3992)
 (print, oldtool=#<oldtool> open_pocket=#<open_pocket>)
 (print, newtool=#<newtool> newpocket=#<newpocket>)
+
+O75 if [#<oldtool> NE #<newtool>]
+    (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
+O75 endif
 
 ; First things first, rapid to safe Z
 G53 G0 Z[#<_ini[ATC]CHANGEZ>]
@@ -228,6 +246,31 @@ O200 elseif [#<newtool> GT 0]
         #3992 = 1 ; This was a manual tool change
     O210 endif
 O200 endif
+
+(print, 5181: #5181)
+(print, 5182: #5182)
+(print, 100: #100)
+(print, 101: #101)
+
+(First check if newtool is greater than 0)
+O400 if [#<newtool> GT 0 AND #<_hal[halui.mode.is-auto]> EQ 1 AND #5000 EQ 0]
+    (Check first condition group)
+    O410 if [#100 EQ #5181 AND #101 EQ #5182] 
+        (Print, Condition 1 met, do nothing or handle this case if needed)
+        G0 X0 Y0
+    O410 elseif [#100 EQ #<_ini[AXIS_X]MAX_LIMIT> AND #101 EQ #<_ini[AXIS_Y]MAX_LIMIT_ADJUSTED>] 
+        G0 X0 Y0
+        (Print, Condition 2 met, do nothing or handle this case if needed)
+    O410 elseif [#100 EQ 0 AND #101 EQ 0] 
+        G0 X0 Y0
+        (Print, Condition 2 met, do nothing or handle this case if needed)
+    O410 else
+        (Print, Goto Previous X#100 /Y#101 )
+        G0 G53 X#100 Y#101 
+    O410 endif
+    (Print, Switch to program view)
+    (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewProgram{}])
+O400 endif
 
 ; Rest the limits back to normal
 M68 E00 Q0

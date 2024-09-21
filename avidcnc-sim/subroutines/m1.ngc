@@ -1,0 +1,12 @@
+o<m1> sub
+
+O10 if [#2000 EQ 1]
+    (DEBUG, eval[vcp.getWindow{"mainwindow"}.tool_touch_off{}])
+O10 else
+    (DEBUG, eval[vcp.getWindow{"mainwindow"}.resume_feed{}])
+O10 endif
+#2000 = 0
+M1
+o<m1> endsub [1]
+
+M2
