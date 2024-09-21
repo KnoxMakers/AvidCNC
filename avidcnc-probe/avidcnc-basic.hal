@@ -44,7 +44,7 @@ addf hlfb-timedelay servo-thread
 addf hlfb-and2 servo-thread
 
 net on-sig motion.motion-enabled hlfb-timedelay.in
-setp hlfb-timedelay.on-delay .1
+setp hlfb-timedelay.on-delay .2
 setp hlfb-timedelay.off-delay 0
 
 net machine-is-enabled hlfb-timedelay.out
@@ -55,11 +55,11 @@ addf y2-hlfb-and2 servo-thread
 addf z-hlfb-and2 servo-thread
 addf a-hlfb-and2 servo-thread
 
-alias pin hm2_7i76e.0.7i76.0.0.input-11-not x-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-12-not y-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-13-not y2-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-14-not z-servo-hlfb
-alias pin hm2_7i76e.0.7i76.0.0.input-15-not a-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-27-not x-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-28-not y-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-29-not y2-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-30-not z-servo-hlfb
+alias pin hm2_7i76e.0.7i76.0.0.input-31-not a-servo-hlfb
 alias pin hm2_7i76e.0.7i76.0.0.output-04 tchg-out
 alias pin hm2_7i76e.0.7i76.0.0.output-05 air-purge-out
 
@@ -131,7 +131,7 @@ net air-purge-net  =>    motion.digital-out-01 => air-purge-out
 net coolant-mist  =>     hm2_7i76e.0.7i76.0.0.output-06
 
 # --- COOLANT-FLOOD ---
-net coolant-flood  =>     hm2_7i76e.0.7i76.0.0.output-08
+net coolant-flood  =>     hm2_7i76e.0.7i76.0.0.output-10
 
 # external input signals
 
@@ -164,8 +164,8 @@ net estop-ext-or     <=  hm2_7i76e.0.7i76.0.0.input-05 => estop-and.in0
 #net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
 # --- TOUCH PROBE-IN (Z-PROBE) ---
-#net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06-not => probe-or.in0
-net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06 => probe-or.in0
+net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-26-not => probe-or.in0
+#net probe-raw-in     <=  hm2_7i76e.0.7i76.0.0.input-06 => probe-or.in0
 net probe-or-sig     <=  probe-or.out => dsmono.0.in
 
 net probe-in <= dsmono.0.out
@@ -176,15 +176,15 @@ net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07-not => probe-or.in1
 
 # --- TOOL HEIGHT PROBE OVER TRAVEL ---
 
-net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-08 => estop-and.in1
+net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-24 => estop-and.in1
 
 # --- TOOL CHANGE BUTTON IN ---
-net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-09 => tchg-or.in1
+net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-25 => tchg-or.in1
 net tchg-out-net <= tchg-or.out => s_interlock.release-request
 net tchg-interlock-out s_interlock.release-out  => tchg-out
 
 # --- AUX-IN ---
-net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-10
+net aux-in     <=  hm2_7i76e.0.7i76.0.0.input-26
 
 #*******************
 #  AXIS X JOINT 0
@@ -415,7 +415,7 @@ setp   pid.s.error-previous-target true
 
 net spindle-index-enable    => pid.s.index-enable
 net spindle-is-on-interlock =>  pid.s.enable
-net spindle-vel-cmd-rpm     => pid.s.command
+net spindle-vel-cmd-rpm-abs  => pid.s.command
 net spindle-vel-fb-rpm      => pid.s.feedback
 net spindle-output          <=  pid.s.output
 
