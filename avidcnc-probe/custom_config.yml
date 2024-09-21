@@ -9,12 +9,22 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
-        columns: TUZDR
+        columns: TZDUR
 
   offsettable:
     provider: qtpyvcp.plugins.offset_table:OffsetTable
     kwargs:
       columns: "XYZR"
+
+  file_locations:
+    provider: qtpyvcp.plugins.file_locations:FileLocations
+    log_level: debug
+    kwargs:
+      default_location: Users
+      local_locations:
+        # format: Location Name: path
+        Users: ~/linuxcnc/nc_files/USERS
+      network_locations:
 
 settings:
 
@@ -45,9 +55,19 @@ settings:
     default_value: false
 
   backplot.view:
-    default_value: P
-    options: ["X: Front View", "XZ: Lathe View", "XZ2: Lathe View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "P: Isometric"]
+    default_value: 5
+    options: ["X: Front View",
+              "Y: Front View",
+              "Z: Top View",
+              "Z2: Bottom View",
+              "P: Isometric",
+              "M: Machine EXT"]
+
+  backplot.machine-ext-scale:
+    default_value: 0.4
 
   backplot.multitool-colors:
     default_value: True
 
+  backplot.show-machine-model:
+    default_value: false
