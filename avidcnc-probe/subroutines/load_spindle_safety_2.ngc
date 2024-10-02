@@ -12,6 +12,8 @@
 o<load_spindle_safety_2> sub
 (PRINT, o<load_spindle_safety_2>)
 
+G90
+
 #<load_spindle_tool_number_2> = #1 ; this is the value form the TOOL tab
 #<probe_tool_number> = #3014
 

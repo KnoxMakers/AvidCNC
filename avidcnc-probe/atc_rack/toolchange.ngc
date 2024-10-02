@@ -78,7 +78,7 @@ O60 endwhile
 (print, newtool=#<newtool> newpocket=#<newpocket>)
 
 O75 if [#<oldtool> NE #<newtool>]
-    (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
+    ;(DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
 O75 endif
 
 ; First things first, rapid to safe Z
@@ -269,7 +269,7 @@ O400 if [#<newtool> GT 0 AND #<_hal[halui.mode.is-auto]> EQ 1 AND #5000 EQ 0]
         G0 G53 X#100 Y#101 
     O410 endif
     (Print, Switch to program view)
-    (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewProgram{}])
+    ;(DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewProgram{}])
 O400 endif
 
 ; Rest the limits back to normal

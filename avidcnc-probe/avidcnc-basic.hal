@@ -14,12 +14,27 @@ loadrt timedelay names=hlfb-timedelay,spindle-on-delay
 loadrt sum2 names=y-atc-offset
 loadrt or2 names=mpg-mode-or,tchg-or,probe-or
 loadrt not names=pendant-not
-loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2,estop-and
+loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2,estop-and,near-and
+loadrt near names=near-x,near-y
+addf near-x servo-thread
+addf near-y servo-thread
+addf near-and servo-thread
 loadrt debounce cfg=1
+loadrt lut5 names=drawbar-lut5
+addf drawbar-lut5 servo-thread
 addf debounce.0 servo-thread
 addf spindle-on-delay servo-thread
 addf s_interlock servo-thread
 setp hm2_7i76e.0.7i76.0.0.analogin0-scalemax 397.0
+setp drawbar-lut5.function 0xE0
+
+setp near-x.scale 1
+setp near-x.difference 2
+setp near-y.scale 1
+setp near-y.difference 2
+setp near-x.in2 -1.04
+setp near-y.in2 -108.48
+
 
 #Default block-delete to OFF
 setp halui.program.block-delete.off 1
@@ -28,7 +43,8 @@ setp halui.program.block-delete.on 0
 setp debounce.0.delay 50
 
 loadrt dsmono
-setp dsmono.0.deadtime-ns 125000000
+#setp dsmono.0.deadtime-ns 125000000
+setp dsmono.0.deadtime-ns 5000000
 addf dsmono.0 servo-thread
 
 addf mpg-mode-or servo-thread
@@ -179,7 +195,11 @@ net tlp-in     <=  hm2_7i76e.0.7i76.0.0.input-07-not => probe-or.in1
 net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-24 => estop-and.in1
 
 # --- TOOL CHANGE BUTTON IN ---
-net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-25 => tchg-or.in1
+#net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-25 => tchg-or.in1
+
+net tchg-in		<= hm2_7i76e.0.7i76.0.0.input-25 	=> drawbar-lut5.in-2
+net tchh-in-safe   	<= near-and.out				=> drawbar-lut5.in-0			
+net tchg-out-or <= drawbar-lut5.out => tchg-or.in1
 net tchg-out-net <= tchg-or.out => s_interlock.release-request
 net tchg-interlock-out s_interlock.release-out  => tchg-out
 
@@ -225,7 +245,7 @@ setp   hm2_7i76e.0.stepgen.00.maxvel           [JOINT_0]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
-net x-pos-cmd    <= joint.0.motor-pos-cmd
+net x-pos-cmd    <= joint.0.motor-pos-cmd  <= near-x.in1
 net x-vel-cmd    <= joint.0.vel-cmd
 net x-output     => hm2_7i76e.0.stepgen.00.velocity-cmd
 net x-pos-fb     <= hm2_7i76e.0.stepgen.00.position-fb
@@ -278,7 +298,7 @@ setp   hm2_7i76e.0.stepgen.01.maxvel           [JOINT_1]STEPGEN_MAXVEL
 
 # ---closedloop stepper signals---
 
-net y-pos-cmd    <= joint.1.motor-pos-cmd
+net y-pos-cmd    <= joint.1.motor-pos-cmd => near-y.in1
 net y-vel-cmd    <= joint.1.vel-cmd
 net y-output     => hm2_7i76e.0.stepgen.01.velocity-cmd
 net y-pos-fb     <= hm2_7i76e.0.stepgen.01.position-fb
@@ -513,3 +533,6 @@ net estop-ext     =>  estop-and.out => iocontrol.0.emc-enable-in
 #net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
 #net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
 #net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+
+net near-and-x => near-x.out => near-and.in0
+net near-and-y => near-y.out => near-and.in1

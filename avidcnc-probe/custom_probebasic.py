@@ -16,6 +16,7 @@ from qtpyvcp.utilities.info import Info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from linuxcnc import ini
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp import hal
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -41,6 +42,8 @@ class CustomProbeBasic(ProbeBasic):
         self.ResumeDialog = ResumeDialog()
         self.AlignToolDialog = AlignToolDialog()
         self.status = getPlugin('status')
+        comp = hal.getComponent()
+        self.lock_pin = comp.addPin("lock", "bit", "out")
 
         if self.INI_FILE is None:
             self.INI_FILE = ini_file or '/dev/null'
@@ -430,6 +433,7 @@ class CustomProbeBasic(ProbeBasic):
     def lockScreen(self, *args, **kwargs):
         # hide the usb frame
         self.frame_35.hide()
+        self.lock_pin.value = 0
 
         # hide the copy to usb button in file dialog
         self.copy_to_usb_2.hide()
@@ -457,6 +461,7 @@ class CustomProbeBasic(ProbeBasic):
     def unlockScreen(self, *args, **kwargs):
         # show the usb frame
         self.frame_35.show()
+        self.lock_pin.value = 1
 
         # show the copy to usb button in file dialog
         self.copy_to_usb_2.show()
