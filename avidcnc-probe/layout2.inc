@@ -14,8 +14,8 @@ goto-zero-a = ""
 start-pause = std_start_pause
 rewind      = halui.program.step
 # probe-input for simulating a probe:
-#probe-z     = motion.probe-input
-macro-3     = halui.mdi-command-03
+probe-z     = halui.mdi-command-02
+#macro-3     = halui.mdi-command-03
 
 #half        = halui.spindle.0.stop
 half        = ""
@@ -35,12 +35,13 @@ zero-a      = halui.mdi-command-15
 safe-z      = halui.mdi-command-10
 # in this sim, home-all only works first time, hold down till finished:
 home        = halui.mdi-command-07
-macro-1     = halui.mdi-command-01
-macro-2     = halui.mdi-command-02
-spindle     = halui.spindle.0.start
+#macro-1     = halui.mdi-command-01
+#macro-2     = halui.mdi-command-02
+#spindle     = halui.spindle.0.start
+spindle     = halui.mdi-command-01
 step        = xhc-hb04.stepsize-up
 #mode        = toggle_mod
-macro-6     = halui.mdi-command-06
+#macro-6     = halui.mdi-command-06
 #macro-7     = halui.mdi-command-07
 stop        = halui.program.stop
 reset       = halui.estop.activate
@@ -49,9 +50,9 @@ reset       = halui.estop.activate
 # these are examples, edit as required:
 # a halui hal pin is created for each MDI_COMMAND below
 # halui.mdi-command-00, halui.mdi-command-01,... etc
-MDI_COMMAND=G0 X0 Y0 G53 Z0
-MDI_COMMAND=(debug, example: mdi-01)
-MDI_COMMAND=(debug, example: mdi-02)
+MDI_COMMAND=O<go_to_zero> CALL
+MDI_COMMAND=O<go_to_g30> CALL
+MDI_COMMAND=O<probe_z_minus_wco> CALL
 #03 M110: clears notifications
 MDI_COMMAND=M110
 MDI_COMMAND=G10 L20 P0 X[#<_x>/2.0]
