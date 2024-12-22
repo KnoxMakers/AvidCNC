@@ -1,5 +1,6 @@
 o<m300> sub
  (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
+ T0 M6
  M73
  G20
  G90

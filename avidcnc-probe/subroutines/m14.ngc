@@ -1,0 +1,28 @@
+o<m14> sub
+
+; Unloads the rack
+(PRINT, o<m14>)
+
+#<number_of_pockets> = 12
+o110 if [EXISTS[#<_ini[atc]numpockets>]]
+    #<number_of_pockets> = #<_ini[atc]numpockets>
+o110 endif
+
+#1 = 0
+
+o120 while [#1 LT #<number_of_pockets>]
+    #1 = [#1+1]
+    #2 = #[4000+#1]
+    o130 if [#2 GT 0]
+        #3992 = 1
+        T#2 M6
+        #3992 = 1
+        T0 M6
+    o130 endif
+     #[4000 + #1] = 0 ; clear the pocket
+o120 endwhile
+
+(PRINT, o<m14> endsub)
+o<m14> endsub [1]
+
+M2

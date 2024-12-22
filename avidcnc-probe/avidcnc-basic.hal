@@ -10,12 +10,13 @@ loadrt hm2_eth board_ip="192.168.1.121" config="num_encoders=1 num_pwmgens=0 num
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.y2,pid.z,pid.s
 loadrt spindle_interlock names=s_interlock
-loadrt timedelay names=hlfb-timedelay,spindle-on-delay
+loadrt timedelay names=hlfb-timedelay,spindle-on-delay,dustdelay
 loadrt sum2 names=y-atc-offset
 loadrt or2 names=mpg-mode-or,tchg-or,probe-or
 loadrt not names=pendant-not
 loadrt and2 names=hlfb-and2,mpg-and2,x-hlfb-and2,y-hlfb-and2,y2-hlfb-and2,z-hlfb-and2,a-hlfb-and2,estop-and,near-and
 loadrt near names=near-x,near-y
+addf dustdelay servo-thread
 addf near-x servo-thread
 addf near-y servo-thread
 addf near-and servo-thread
@@ -34,7 +35,11 @@ setp near-y.scale 1
 setp near-y.difference 2
 setp near-x.in2 -1.04
 setp near-y.in2 -108.48
+#setp dustdelay.on-delay 15
+#setp dustdelay.off-delay 30
 
+#net coolant_timer_control motion.digital-out-03 dustdelay.in
+#net coolant_timer_status dustdelay.out motion.digital-in-03
 
 #Default block-delete to OFF
 setp halui.program.block-delete.off 1
@@ -198,7 +203,8 @@ net tlp-ot-in     <=  hm2_7i76e.0.7i76.0.0.input-24 => estop-and.in1
 #net tchg-in     <=  hm2_7i76e.0.7i76.0.0.input-25 => tchg-or.in1
 
 net tchg-in		<= hm2_7i76e.0.7i76.0.0.input-25 	=> drawbar-lut5.in-2
-net tchh-in-safe   	<= near-and.out				=> drawbar-lut5.in-0			
+#net tchh-in-safe   	<= near-and.out				=> drawbar-lut5.in-0			
+net tchh-in-safe   	<= motion.digital-out-02		=> drawbar-lut5.in-0			
 net tchg-out-or <= drawbar-lut5.out => tchg-or.in1
 net tchg-out-net <= tchg-or.out => s_interlock.release-request
 net tchg-interlock-out s_interlock.release-out  => tchg-out

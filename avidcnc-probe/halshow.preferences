@@ -1,31 +1,38 @@
 # Halshow settings
 # This file is generated automatically.
-wm geometry . 647x902+717+31
-placeFrames 0.42568807339449544
-set ::ratio 0.42568807339449544
-set ::old_w_leftf 160
+wm geometry . 751x1016+972+0
+placeFrames 0.36535859269282817
+set ::ratio 0.36535859269282817
+set ::old_w_leftf 270
 set ::watchlist {
-    pin+joint.0.amp-fault-in
-    pin+joint.1.amp-fault-in
-    pin+joint.2.amp-fault-in
-    pin+joint.3.amp-fault-in
-    sig+machine-is-enabled
-    pin+timedelay.0.in
-    pin+timedelay.0.out
-    pin+timedelay.0.time
-    pin+a-servo-hlfb
-    pin+x-servo-hlfb
-    pin+y-servo-hlfb
-    pin+y2-servo-hlfb
-    pin+z-servo-hlfb
-    pin+x-hlfb-and2.in0
-    pin+x-hlfb-and2.in1
-    pin+x-hlfb-and2.out
-    pin+x-hlfb-and2.time
-    pin+z-hlfb-and2.in0
-    pin+z-hlfb-and2.in1
-    pin+z-hlfb-and2.out
-    pin+z-hlfb-and2.time
+    pin+iocontrol.0.tool-change
+    pin+iocontrol.0.tool-changed
+    pin+iocontrol.0.tool-number
+    pin+halui.tool.number
+    pin+qtpyvcp_manualtoolchange.number
+    pin+qtpyvcp_manualtoolchange.change
+    pin+qtpyvcp_manualtoolchange.change_button
+    pin+qtpyvcp_manualtoolchange.changed
+    sig+tool-number
+    pin+motion.digital-in-02
+    pin+motion.digital-out-02
+    pin+motion.digital-out-01
+    pin+motion.digital-out-00
+    pin+ini.0.max_velocity
+    pin+ini.u.max_velocity
+    pin+ini.x.max_velocity
+    pin+ini.y.max_velocity
+    pin+ini.z.max_velocity
+    pin+ini.traj_max_velocity
+    pin+dustdelay.elapsed
+    pin+dustdelay.in
+    pin+dustdelay.off-delay
+    pin+dustdelay.on-delay
+    pin+dustdelay.out
+    pin+dustdelay.time
+    pin+motion.digital-in-03
+    pin+motion.digital-out-03
+    pin+qtpyvcp.enable-auto-touchoff.checked
 }
 set ::workmode watchhal
 set ::watchInterval 100

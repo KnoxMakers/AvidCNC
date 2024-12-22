@@ -60,10 +60,10 @@ class CustomProbeBasic(ProbeBasic):
         self.tabWidget.setCurrentIndex(0)
 
         # rename the Flood button
-        self.flood_button.setText("Vaccum")
+        #self.flood_button.setText("Vaccum")
 
         # rename the Mist button
-        self.mist_button.setText("Air Blast")
+        #self.mist_button.setText("Air Blast")
 
         # rename REF AlL to HOME ALL buttons, for each axis config
 
@@ -172,6 +172,18 @@ class CustomProbeBasic(ProbeBasic):
         self.tool_rack_button2 = SubCallButton(None, filename="store_tool_in_rack.ngc")
         self.tool_rack_button2.setText("Store Tool in Rack")
 
+        self.tool_table.setProperty("currentToolColor", QtGui.QColor(255, 255, 255))
+        #self.tool_table.setProperty("currentToolBackground", QtGui.QColor(42, 56, 255))
+        self.tool_table.setProperty("currentToolBackground", QtGui.QColor(85, 85, 238))
+        self.offset_table.setProperty("currentRowColor", QtGui.QColor(0, 0, 0))
+
+        self.offset_table.setStyleSheet(
+            "QTableView::item:selected"
+            "{"
+            "background-color : #5555EE;"
+            "selection-color : #FFFFFF;"
+            "}"
+        )
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)

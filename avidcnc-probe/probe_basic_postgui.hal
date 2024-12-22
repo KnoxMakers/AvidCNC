@@ -247,7 +247,7 @@ net tool-change-request     =>  qtpyvcp_manualtoolchange.change
 net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
 net tool-number             =>  qtpyvcp_manualtoolchange.number
         
-net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
+#net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
 
 net spindle-max_rpm  s_interlock.limit halui.tool.length_offset.u
 
@@ -260,3 +260,5 @@ net air-purge-net => qtpyvcp.case-air-led.on
 setp qtpyvcp.spindle-load-indicator.max-val 135
 
 net tchh-in-unlocked    <= qtpyvcp.lock  => drawbar-lut5.in-1 
+
+net auto-touch-off-net	qtpyvcp.enable-auto-touchoff.checked	motion.digital-in-02

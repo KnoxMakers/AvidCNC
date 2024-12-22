@@ -1,14 +1,13 @@
-T10    P3     Z+3.046358   D+0.500000   U0    ; 1/2" 90° V-Groove Bit 0.2500 loc 1.875
-T11    P4     Z+3.094138   D+0.250000   U0    ; 1/4" 2 Flute Upcut Ballend Mill 0.7500 loc 2.5000
-T12    P3     Z+3.185408   D+0.250000   U0    ; 1/4" 2 Flute Upcute End Mill 0.7500 loc 2.500 oal
-T13    P2     Z+3.388752   D+0.250000   U0    ; 1/4" 2 Flute COMP End Mill 1.000 loc 2.500 oal
-T14    P14    Z+2.647144   D+2.000000   U12000 ; 2" Spoil Board bit
-T15    P15    Z+4.035641   D+0.500000   U0    ; 1/2" 2 Flute COMP End Mill NACRO 1.500 loc 4.001
-T16    P16    Z+3.254289   D+0.250000   U0    ; 1/4" 2 Flute COMP End Mill ASTRA 1.000 loc 2.500
-T17    P17    Z+3.600424   D+0.125000   U0    ; 1/8" Jobber Drill001
-T18    P18    Z+4.408566   D+0.250000   U0    ; 1/4" Jobber Drill001
-T19    P19    Z+3.878583   D+0.375000   U0    ; 3/8" Fostner Bit001
-T20    P20    Z+3.351566   D+0.093748   U0    ; 3/32 Jobber Drill001
-T21    P21    Z+3.538200   D+0.787402   U0    ; 20mm Fostner Bit
-T99    P99    Z+3.676400   D+0.078740   U-1   ; Probe Tool 2mm ball Probe Tip
+T10  P3   D+0.500000 Z+3.046358 ; 1/2" 90° V-Groove Bit
+T11  P4   D+0.205000 Z+3.094138 ; 1/4" 2 Flute Upcut Ball Nose Mill
+T12  P3   D+0.250000 Z+3.185408 ; 1/4" 2 Flute Upcut End Mill
+T13  P2   D+0.250000 Z+3.388752 ; 1/4" 2 Flute Compression End Mill
+T14  P14  D+2.000000 Z+2.654551 U+12000.000000 ; 2" 4 Flute Carbide Spoil Board Bit
+T15  P15  D+0.500000 Z+4.037744 ; 1/2" 2FL COMP End Mill NACRO 1.500 loc 4.000 oal
+T16  P16  D+0.250000 Z+3.258304 ; 1/4" 2FL COMP End Mill ASTRA 1.000 loc 2.500 oal
+T17  P17  D+0.250000 Z+3.319971 ; 1/4" 2 Flute Spiral Down Cut 1.000 loc 2.500 oal
+T20  P20  D+1.250000 Z+3.038013 ; 1-1/4" Bowl & Tray Bit 0.500 loc 2.250 oal
+T21  P21  D+0.750000 Z+3.538200 ; 3/4" Bowl & Tray Bit 0.625 loc 2.375 oal
+T22  P0   D+2.000000 Z+2.996474 U+12000.000000 ; 2" 3 Flute Carbide Insert Spoil Board Bit
+T99  P99  D+0.078700 Z+3.676400 U-1.000000 ; Wired Touch Probe
 T100 P100 D+1.500000 ; Spindle Nose

@@ -90,6 +90,9 @@ G53 G0 Z[#<_ini[ATC]CHANGEZ>]
 O100 if [#<oldtool> EQ #<newtool>]
     ; This is a special case in which no tool needs to be dropped off. This assumes that the user has the tool table under control. further down, during pick up of newtool a message will be brought forward to GUI
     (print, do absolutly nothing)
+    M64 P2
+    M6 T#<newtool>
+    M65 P2    
 O100 elseif [#<oldtool> GT 0]
     (print, Tool No  #<oldtool> is in the spindle - we need to put it away)
     O110 if [#<open_pocket> GT 0]  ; Pocket in range, and pocket is empty.
@@ -152,7 +155,9 @@ O100 elseif [#<oldtool> GT 0]
         ; Move Spindle to tool change position
         G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
         G53 G0 Z[#<_ini[ATC]CHANGEZ>]
+	M64 P2
         M6 T0
+	M65 P2
         (PRINT, TOOLCALL: #<open_pocket>, #<oldtool>)
         #3991 = 0 ; empty tool in the spindle
         #3992 = 1 ; This was a manual tool change
@@ -240,7 +245,9 @@ O200 elseif [#<newtool> GT 0]
         ; Move Spindle to tool change position
         G53 G0 X[#<_ini[ATC]CHANGEX>] Y[#<_ini[ATC]CHANGEY>]
         G53 G0 Z[#<_ini[ATC]CHANGEZ>]
+	M64 P2
         M6 T#<newtool>
+        M65 P2
         (PRINT, TOOLCALL: #<newpocket>, 0)
         (print, A tool is manually loaded and we can continue with measurement)
         #3992 = 1 ; This was a manual tool change

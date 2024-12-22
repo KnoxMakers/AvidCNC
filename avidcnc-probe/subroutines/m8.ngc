@@ -1,0 +1,13 @@
+o<m8> sub
+
+; Start the timer by setting coolant_on signal using M64
+M64 P3  ; This sets `motion.digital-out-03` high, starting the delay timer
+
+; Wait for the delay to complete by checking motion.digital-in-02 with M66
+M66 P3 L3  ; Wait until motion.digital-in-03 goes high
+
+; After delay, turn on coolant
+M8
+
+o<m8> endsub
+M2

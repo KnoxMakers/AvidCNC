@@ -1,0 +1,10 @@
+o<m9> sub
+
+; Reset the timer by turning off the coolant_on signal using M65
+M65 P3  ; This sets `motion.digital-out-03` low, resetting the delay
+
+; Turn off coolant
+M9
+
+o<m9> endsub
+M2

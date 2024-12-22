@@ -1,0 +1,104 @@
+#!/usr/bin/python3
+
+# (author: Billy Huddleston aka Connor)
+# (version: 0.1)
+# (date: 10/26/25)
+
+# Auto Load Tool Rack / Carousel
+# Loops through currently loaded program and finds all the tools.
+# Issues mdi commands to manually load the tool, and then store in the
+# Tool Rack / Carousel
+# Uses 3992 to tell M6 that tool is to be stored in rack when next tool
+# is called up. If the tool is already in the rack, then it's called up
+# If Tool Touch off is enabled (M38 on my machine) then it will touch off
+# the tool before storing in the rack.
+
+import linuxcnc
+import re
+from collections import OrderedDict
+
+def m120():
+    # Create a stat object to get the current program path
+    stat = linuxcnc.stat()
+    c = linuxcnc.command()
+    stat.poll()
+
+    print("Start M120\n")
+    print(stat.file)
+
+    # Retrieve the loaded G-code file path
+    gcode_file = stat.file
+    if not gcode_file:
+        print("No G-code file loaded.")
+        return
+
+    # Define the output file for the tool list
+    #output_file = "./subroutines/m35.ngc"
+
+    # Use OrderedDict to maintain order while eliminating duplicates
+    tools_used = OrderedDict()
+    tool_pattern = re.compile(r'\bT(\d+)\b')  # Matches tool numbers like T1, T2
+
+    try:
+        # Open and read the G-code file
+        with open(gcode_file, 'r') as infile:
+            for line in infile:
+
+                # Strip leading/trailing whitespace for easy checking
+                stripped_line = line.strip()
+
+                # Conditionally skip block delete lines if block delete mode is enabled
+                if stat.block_delete and stripped_line.startswith("/"):
+                    continue  # Skip this line if it's a block delete and block delete mode is enabled
+
+                # Skip lines that are comments
+                if stripped_line.startswith("("):
+                    continue  # Skip comment lines regardless of block delete status
+
+                # Search for tool calls (e.g., T1, T2) in each line
+                match = tool_pattern.search(line)
+                if match:
+                    tool_number = int(match.group(1))
+                    # Ignore tool 0 and Tool 99, could be expanded with database or
+                    # tool table check later on
+                    if tool_number != 0 and tool_number != 99:
+                        tools_used[tool_number] = None  # Add to OrderedDict to retain order and uniqueness
+
+        # Reverse the order in which tools were read
+        ordered_tools = list(tools_used.keys())[::-1]
+
+        # Custom stuff for router, toggles pgm view vs machine view
+        # Write the list of tools to the output file in the reversed read order
+        c.mdi("#5000=1")
+
+        for index, tool in enumerate(ordered_tools, start=1):
+            stat.poll()
+
+            # Issue Tx M6 command
+            command = f"T{tool} M6"
+            c.mdi(command)
+
+            # Set 3992=0 so M6 knows that this tool is to be stored in the rack
+            # when next tool is called up
+            c.mdi("#3992=0")
+
+            # Optional Tool touch off, would like a On/Off toggle on GUI
+            stat.poll()
+            print(f"pin: ")
+            print(stat.din[2])
+            if stat.din[2]:
+                c.mdi("M38")
+
+            # Custom stuff for router, toggles pgm view vs machine view
+            if index == len(ordered_tools) - 1:
+                c.mdi("#5000=2")
+
+        # Last tool, move to X0 Y0
+        c.mdi("G0 X0 Y0")
+
+    except Exception as e:
+        print(f"Error processing file: {e}")
+
+# Run the function when the script is executed
+if __name__ == "__main__":
+    m120()
