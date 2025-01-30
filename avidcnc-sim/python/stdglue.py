@@ -8,7 +8,6 @@
 # we dont use argspec to avoid the generic error message of the argspec prolog and give more
 # concise ones here
 
-
 import emccanon
 import re
 from interpreter import *

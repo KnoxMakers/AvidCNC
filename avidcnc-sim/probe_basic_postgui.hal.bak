@@ -250,11 +250,13 @@ net spindle-max_rpm  s_interlock.limit halui.tool.length_offset.u
 net draw-bar motion.digital-out-00 =>   qtpyvcp.drawbar-led.on
 net low-psi-net motion.digital-in-00 => a_low-psi.out
 net low-psi-net n_air-psi.in
-net low-psi-net_n n_air-psi.out		
 setp qtpyvcp.air-psi-led.flash-rate 250
 
 net low-psi-net_n  n_air-psi.out => qtpyvcp.air-psi-led.flash
 net low-psi-net_n  n_air-psi.out => qtpyvcp.air-psi-led.on
+net low-psi-net_n  n_air-psi.out => amber-light-mux.sel2
+
+net machine-is-on amber-light-mux.sel3
 net machine-is-on halui.machine.is-on
 
 net case-air motion.digital-out-01 =>   qtpyvcp.case-air-led.on
@@ -279,80 +281,41 @@ setp halui.program.block-delete.on 0
 # Connect the LUT output to the desired signal
 #net output_signal <= lut5.0.out
 
-net is-auto	<= halui.mode.is-auto
-net is-paused	<= halui.program.is-paused
+net is-auto	<= halui.mode.is-auto		=> blue-light-enable.sel 
+net is-paused	<= halui.program.is-paused	=> amber-light-mux.sel0
+
+net amber-light-paused	 amber-light-mux.sel1	<= motion.digital-out-02
+
+setp green-light-mux.in5 1
+setp green-light-mux.in7 2
+
+setp amber-light-mux.in08 0
+setp amber-light-mux.in09 1
+setp amber-light-mux.in10 0
+setp amber-light-mux.in11 2
+setp amber-light-mux.in12 2
+setp amber-light-mux.in13 2
+setp amber-light-mux.in14 2
+setp amber-light-mux.in15 2
+
+net red-light status_light.red		<= motion.analog-out-01 
+net amber-light status_light.amber	<= amber-light-mux.out-f
+
+net green-light status_light.green	<= green-light-mux.out
+
+net blue-light status_light.blue	<= blue-light-enable.out	
+net blue-light-in blue-light-enable.in1	<= motion.analog-out-04 
+
+net machine-is-on white-light-mux.sel
+net white-light-statue	white-light-mux.in1	motion.analog-out-05
 
 
-### Amber Light Logic ###
+net white-light status_light.white	<= white-light-mux.out 
 
-# combine blue not with is-paused - Blue light over-rides amber
-net amber-light-and-blue <= blue-light-not.out
+net buzzer-light status_light.buzzer	<= motion.analog-out-06 
+net test-light status_light.test	<= motion.analog-out-07
 
-net is-paused	=> amber-light-and.in0	
-net amber-light-and-blue =>  amber-light-and.in1	
-
-net amber-light-and-motion	<= amber-light-and.out		=> amber-light-mux.sel0
-net amber-light-blink		<= motion.digital-out-02	=> amber-light-mux.sel1
-net low-psi-net_n	=> amber-light-mux.sel2
-net machine-is-on	=> amber-light-mux.sel3
-
-setp amber-light-mux.in08 0  # !Paused, !Blink, !PSI
-setp amber-light-mux.in09 1  # Paused, !Blink, !PSI 
-setp amber-light-mux.in10 0  # !Paused, Blink, !PSI
-setp amber-light-mux.in11 2  # Paused, Blink, !PSI
-setp amber-light-mux.in12 2  # !Paused, !Blink, PSI 
-setp amber-light-mux.in13 2  # Paused & !Blink, PSI
-setp amber-light-mux.in14 2  # !Paused, Blink,  PSI
-setp amber-light-mux.in15 2  # Paused, Blink, PSI
-
-# Set amber light status
-net amber-light status_light.amber	<= amber-light-mux.out-f	
-
-### End Amber Light Logic ###
-
-### Blue Light Logic ###
-
-# We're auto, not manul or mdi, allow blue light 
-net is-auto => blue-light-mux.sel0
-net red-light-active blue-light-mux.sel1 
-
-# not blue light status for amber
-net blue-light-active => blue-light-not.in
-
-# link blue light to analog-out-04	
-net blue-light-in blue-light-mux.in1	<= motion.analog-out-04 
-
-# Set blue light status
-net blue-light status_light.blue	<= blue-light-mux.out	
-
-### End Blue Light Logic ###
-
-### White Light Logic ###
-
-# Machine is on, enable white light, When in E-Stop, machine is turned off automaticlly.
-net white-light-status  white-light-mux.sel0	motion.digital-out-04	
-
-# If amber OR red light is on, supress white light.
-net amber-light-active amber-or-red.in0
-net red-light-active amber-or-red.in1
-net amber-or-red-active amber-or-red.out white-light-mux.sel2
-
-# Set solid/blink from analog-out-5
-setp white-light-mux.in08 1
-
-net white-light-blink white-light-mux.in10	=> motion.analog-out-05
-net program-running  => white-light-mux.sel1
-net machine-is-on => white-light-mux.sel3
-
-# Set while light status
-net white-light status_light.white	<= white-light-mux.out-f
-
-### End White Light Logic ###
-
-#net buzzer-light status_light.buzzer	<= motion.analog-out-06 
-#net test-light status_light.test	<= motion.analog-out-07
-
-### Green Light Logic ###
+net auto-touch-off-net	qtpyvcp.enable-auto-touchoff.checked  motion.digital-in-02
 
 # Connect existing nets to abs inputs
 net white-light => abs_white.in
@@ -372,54 +335,26 @@ net amber-light-active => any_light_lut.in-1
 net blue-light-active => any_light_lut.in-2
 net red-light-active => any_light_lut.in-3
 
+# Control Green Light Logic
 # Green light should only be active when no higher-priority lights are active
-
-net green-light status_light.green	<= green-light-mux.out
-setp green-light-mux.in5 1
-setp green-light-mux.in7 2
 
 net green-light-any-other green-light-mux.sel2 <= any_light_lut.out
 net program-running halui.program.is-running => green-light-mux.sel1
-
 net machine-is-on green-light-mux.sel0
 
-### End Green Light Logic ###
+#####
 
-### Red Light Logic ###
+
 loadrt logic count=1 personality=0x206  # 6 inputs with OR output
 addf logic.0 servo-thread               # Add it to the servo thread
 
 # Connect your signals to the inputs
-net sig1 => logic.0.in-00	spindle.0.amp-fault-in	# vfd
-net sig2 => logic.0.in-01	joint.0.amp-fault-in	# x amp
-net sig3 => logic.0.in-02	joint.1.amp-fault-in	# y-1 amp
-net sig4 => logic.0.in-03	# y-2 amp
-net sig5 => logic.0.in-04	joint.2.amp-fault-in	# z amp
-net sig6 => logic.0.in-05	# a amp
+net sig1 => logic.0.in-00
+net sig2 => logic.0.in-01
+net sig3 => logic.0.in-02
+net sig4 => logic.0.in-03
+net sig5 => logic.0.in-04
+net sig6 => logic.0.in-05
 
 # Connect the OR output to your desired signal
-
-net machine-is-on machine-reset.in 
-setp machine-reset.in-edge 0
-net reset-signal machine-reset.out => fault-latch.reset
-net estop-crit fault-latch.clk
-net estop-crit fault-latch.data
-
-net estop-crit <= logic.0.or
-
-setp red-light-mux.in0 0	# !E-Stop, !estop-crit
-setp red-light-mux.in1 1	# E-Stop, !estop-crit
-setp red-light-mux.in2 2	# !E-Stop, estop-crit
-setp red-light-mux.in3 2	# E-Stop, estop-crit
-
-net red-light status_light.red	=> red-light-mux.out 
-
-net estop-out	<= halui.estop.is-activated
-net estop-out	=> red-light-mux.sel0
-net fault-latch-out	fault-latch.out	=> red-light-mux.sel1 
-
-### End Red Light Logic ###
-
-net auto-touch-off-net	qtpyvcp.enable-auto-touchoff.checked  motion.digital-in-02
-net auto-zoom-net	qtpyvcp.enable-auto-zoom.checked  motion.digital-in-03
-
+net or_output <= logic.0.or

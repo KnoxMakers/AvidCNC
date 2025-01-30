@@ -71,7 +71,8 @@ o160 do
     #130 = [#130 - 1]
 o160 while [#130 GT 0]
 o170 if [#<next_pocket> EQ 0] ; if tool is not found, aborts and sends a message
-    (abort, Tool T%d#<selected_tool> not found in carousel)
+    ;(abort, Tool T%d#<selected_tool> not found in carousel)
+    M6 T#<selected_tool>
 o170 endif
 
 ; now we know which pocket the next tool is sitting in

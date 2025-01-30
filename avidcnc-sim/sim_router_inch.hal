@@ -5,7 +5,7 @@
 loadrt mult2 count=3
 
 loadrt wcomp names=xlim,ylim,zlim
-loadrt mux2 names=mux2.0
+#loadrt mux2 names=mux2.0
 loadrt sum2 names=y-atc-offset
 
 addf mult2.0 servo-thread

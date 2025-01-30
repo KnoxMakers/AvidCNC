@@ -4,4 +4,4 @@ net tool-change-confirmed  => iocontrol.0.tool-changed
 net tool-number            <= iocontrol.0.tool-prep-number
 
 #  ---ignore tool prepare requests---
-#net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared

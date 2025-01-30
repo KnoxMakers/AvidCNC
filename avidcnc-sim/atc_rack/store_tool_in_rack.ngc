@@ -10,6 +10,12 @@ G49
 
 #4 = #<_current_tool>
 #5 = #<_current_pocket>
+#<probe_tool_number> = #3014    (=99)
+
+o100 if [#4 eq #<probe_tool_number>]
+    (Abort, Specified tool #%d#<probe_tool_number> is a probe, not storing in spindle, aborting)
+    
+o100 endif
 
 #<number_of_pockets> = 12
 o110 if [EXISTS[#<_ini[atc]pockets>]]

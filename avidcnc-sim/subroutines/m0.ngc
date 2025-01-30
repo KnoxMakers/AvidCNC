@@ -2,11 +2,15 @@ o<m0> sub
 
 O10 if [#2000 EQ 1]
     (DEBUG, eval[vcp.getWindow{"mainwindow"}.tool_touch_off{}])
+O10 else if [#2000 EQ 2]
+    (DEBUG, eval[vcp.getWindow{"mainwindow"}.tool_breakage{}])
 O10 else
     (DEBUG, eval[vcp.getWindow{"mainwindow"}.resume_feed{}])
+    M64 P2
 O10 endif
 #2000 = 0
 M0
+M65 P2
 o<m0> endsub [1]
 
 M2

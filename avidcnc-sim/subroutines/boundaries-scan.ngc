@@ -1,0 +1,28 @@
+O<boundaries-scan> SUB
+
+(-------------------------------------------------------------------------------------------------------)
+#<_UseInches> =           1     ( set to 1 to use inches here, or 0 to use millimeters )
+#<_TravelFeed> =     500     ( feedrate used to travel to and along the boundaries )
+(-------------------------------------------------------------------------------------------------------)
+
+M70                   ( save current modal state )
+G[21 - #<_UseInches>] ( use inches or millimeters as required here, units will be restored on return )
+(#G30.1)                 ( save current position in #5181-#5183... )
+G90                   ( use absolute positioning here )
+G40                   ( turn cutter radius compensation off here )
+G94                   ( use feedrate in units/min )
+G61                   ( follow exact path, don't round corners )
+
+( Move to first corner of bounding box )
+G53 G0 X#<_hal[qtpyvcp.xmin]> Y#<_hal[qtpyvcp.ymin]>
+( Drive around the block )
+G53 G1 F#<_TravelFeed> X#<_hal[qtpyvcp.xmin]> Y#<_hal[qtpyvcp.ymax]>
+G53 G1 F#<_TravelFeed> X#<_hal[qtpyvcp.xmax]> Y#<_hal[qtpyvcp.ymax]>
+G53 G1 F#<_TravelFeed> X#<_hal[qtpyvcp.xmax]> Y#<_hal[qtpyvcp.ymin]>
+G53 G1 F#<_TravelFeed> X#<_hal[qtpyvcp.xmin]> Y#<_hal[qtpyvcp.ymin]>
+
+(#G53 G0 X[#5181] Y[#5182])  ( return to where we were in X Y)
+M72                       ( restore modal state )
+
+O<boundaries-scan> ENDSUB
+M2

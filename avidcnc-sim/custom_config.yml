@@ -7,7 +7,8 @@ windows:
 
 data_plugins:
   tooltable:
-    provider: qtpyvcp.plugins.tool_table:ToolTable
+    provider: qtpyvcp.plugins.db_tool_table:DBToolTable
+    #provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
         columns: TZDUR
 
@@ -18,7 +19,6 @@ data_plugins:
 
   file_locations:
     provider: qtpyvcp.plugins.file_locations:FileLocations
-    log_level: debug
     kwargs:
       default_location: Users
       local_locations:

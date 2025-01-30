@@ -17,6 +17,7 @@ o<tool_touch_off> sub
 #<tool_diameter_offset_mode> = #3012    (activates the tool diameter offset position for probe subroutine section)
 #<tool_setter_offset_direction> = #3013    (sets tool setter offset direction to move tool)
 #<tool_diameter> = #5410    (current tool's diameter used for offseting probe position in x axis)
+#<tolerance> = 0.002  (Set your acceptable tolerance in inches or mm)
 
 G92.1    (Cancel G92 offset)
 M50 P0
@@ -30,6 +31,7 @@ M50 P0
 #<right_offset_probing_position> = [#<tool_touch_x_coords> + #<tool_radius_offset>]
 #<front_offset_probing_position> = [#<tool_touch_y_coords> - #<tool_radius_offset>]
 #<back_offset_probing_position> = [#<tool_touch_y_coords> + #<tool_radius_offset>]
+#<current_tool_length> = #5403 
 
 o100 if [#<tool_diameter_offset_mode> EQ 1 AND #<tool_diameter> GE #<_ini[TOOLSETTER]TS_DIAMETER>]
     o101 if [#<tool_setter_offset_direction> EQ 0]
@@ -61,7 +63,9 @@ G53 G1 F[#<traverse_fr>] Z#<tool_touch_z_coords>
 
 o200 if [#<tool_diameter_offset_mode> EQ 1 AND #<tool_diameter> GE #<_ini[TOOLSETTER]TS_DIAMETER>]
     #2000 = 1
+    M68 E4 Q2
     M0
+    M68 E4 Q0
 o200 endif
 
 G91
@@ -109,7 +113,18 @@ G10 L1 P #5400 Z [#<new_tool_length_offset>]  (5400 = tool number)
 
 T #5400 G43  H #5400    (enable tool length offset)
 
-#5000=2
+#<deviation> = [ABS[#<new_tool_length_offset> - #<current_tool_length>]]  (Calculate absolute deviation)
+
+o160 if [#<current_tool_length> gt 0 AND #<deviation> gt #<tolerance>]
+    (Tool breakage detected, stop the program)
+    #2000 = 2
+    G10 L1 P #5400 Z0  (5400 = tool number)
+    T #5400 G43  H #5400    (enable tool length offset)
+    M0    
+    M38
+o160 endif
+
+(#5000=2)
 M50 P1  (reinstate feedrate override)
 (AXIS,show)
 

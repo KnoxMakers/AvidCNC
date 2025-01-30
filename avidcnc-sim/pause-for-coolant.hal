@@ -1,0 +1,22 @@
+# Load and configure the timedelay component
+loadrt timedelay
+addf timedelay.0 servo-thread
+
+# Load and configure the or2 component
+loadrt or2
+addf or2.0 servo-thread
+
+# Connect the coolant-on signal to the timedelay input
+net coolant-on iocontrol.0.coolant-flood => timedelay.0.in
+
+# Set the delay time (in seconds)
+setp timedelay.0.on-delay 2  # Replace 2 with your desired delay
+
+# Create a signal for when the delay is complete
+net coolant-delay-complete timedelay.0.out => or2.0.in0
+
+# Create a signal for when the machine should pause
+net machine-pause or2.0.out => motion.feed-hold
+
+# Create a signal for when the machine should resume
+net resume-motion or2.0.in1

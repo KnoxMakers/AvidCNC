@@ -1,12 +1,15 @@
 o<m1> sub
 
-O10 if [#2000 EQ 1]
-    (DEBUG, eval[vcp.getWindow{"mainwindow"}.tool_touch_off{}])
-O10 else
+M66 P1 L0  ; Read the state of digital input 0 (which is linked to optional_stop_status)
+#<_stop_state> = #5399  ; Store the result in a parameter
+
+O10 if [#<_stop_state> EQ 1]
     (DEBUG, eval[vcp.getWindow{"mainwindow"}.resume_feed{}])
+    M64 P2
+    M1
+    M65 P2
 O10 endif
-#2000 = 0
-M1
+
 o<m1> endsub [1]
 
 M2

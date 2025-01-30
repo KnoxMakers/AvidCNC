@@ -1,0 +1,8 @@
+o<go_to_fixture_1> sub
+
+G10 L2 P#5220  X4 Y16.6159
+G0 X0 Y0
+
+o<go_to_fixture_1> endsub
+
+M2

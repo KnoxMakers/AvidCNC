@@ -8,16 +8,12 @@ from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
 from qtpyvcp.widgets.button_widgets.mdi_button import MDIButton
 from qtpyvcp.widgets.button_widgets.subcall_button import SubCallButton
 from qtpyvcp.widgets.button_widgets.dialog_button import DialogButton
-from qtpyvcp.widgets.hal_widgets.hal_button import HalButton
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit, VCPSettingsPushButton, VCPSettingsSlider
-from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 from qtpyvcp.widgets.hal_widgets.hal_led import HalLedIndicator
-from qtpyvcp.widgets.dialogs.resume_dialog import ResumeDialog
-from qtpyvcp.widgets.dialogs.align_tool_dialog import AlignToolDialog
 from qtpyvcp.utilities.info import Info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from linuxcnc import ini
-from qtpyvcp.plugins import getPlugin
+
 
 class CustomProbeBasic(ProbeBasic):
     """Main window class for the ProbeBasic VCP.
@@ -36,15 +32,10 @@ class CustomProbeBasic(ProbeBasic):
 
     INI_FILE = os.environ.get("INI_FILE_NAME")
     CONFIG_DIR = os.environ.get('CONFIG_DIR')
-    # Access LinuxCNC status
-    STATUS = getPlugin('status')
 
     def __init__(self, *args, **kwargs):
         super(CustomProbeBasic, self).__init__(*args, **kwargs)
         _translate = QtCore.QCoreApplication.translate
-        self.ResumeDialog = ResumeDialog()
-        self.AlignToolDialog = AlignToolDialog()
-        self.status = getPlugin('status')
 
         if self.INI_FILE is None:
             self.INI_FILE = ini_file or '/dev/null'
@@ -61,10 +52,10 @@ class CustomProbeBasic(ProbeBasic):
         self.tabWidget.setCurrentIndex(0)
 
         # rename the Flood button
-        #self.flood_button.setText("Vaccum")
+        self.flood_button.setText("Vaccum")
 
         # rename the Mist button
-        #self.mist_button.setText("Air Blast")
+        self.mist_button.setText("Air Blast")
 
         # rename REF AlL to HOME ALL buttons, for each axis config
 
@@ -150,11 +141,6 @@ class CustomProbeBasic(ProbeBasic):
 
         self.frame_18.setGeometry(QtCore.QRect(320, 323, 250, 150))
 
-        # Add Padding around VTK Buttons
-        self.verticalLayout_8.setContentsMargins(15, 18, 15, 12)
-        self.vtk_control_buttons.setMinimumSize(QtCore.QSize(105, 0))
-        self.vtk_control_buttons.setMaximumSize(QtCore.QSize(105, 16777215))
-
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_19.setContentsMargins(2,2,2,2)
         self.horizontalLayout_19.setSpacing(6)
@@ -173,18 +159,6 @@ class CustomProbeBasic(ProbeBasic):
         self.tool_rack_button2 = SubCallButton(None, filename="store_tool_in_rack.ngc")
         self.tool_rack_button2.setText("Store Tool in Rack")
 
-        self.tool_table.setProperty("currentToolColor", QtGui.QColor(255, 255, 255))
-        #self.tool_table.setProperty("currentToolBackground", QtGui.QColor(42, 56, 255))
-        self.tool_table.setProperty("currentToolBackground", QtGui.QColor(85, 85, 238))
-        self.offset_table.setProperty("currentRowColor", QtGui.QColor(0, 0, 0))
-
-        self.offset_table.setStyleSheet(
-            "QTableView::item:selected"
-            "{"
-            "background-color : #5555EE;"
-            "selection-color : #FFFFFF;"
-            "}"
-        )
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
@@ -230,15 +204,6 @@ class CustomProbeBasic(ProbeBasic):
         self.dialogbutton.setObjectName("dialogbutton")
         self.verticalLayout_32.addWidget(self.dialogbutton)
 
-        self.resumebutton = DialogButton(self.frame_26)
-        self.resumebutton.setText("Resume")
-        self.resumebutton.setProperty("dialogName", "resume")
-        self.resumebutton.setMinimumSize(QtCore.QSize(0, 40))
-        self.resumebutton.setObjectName("resumebutton")
-        self.verticalLayout_32.addWidget(self.dialogbutton)
-        self.resumebutton.hide()
-
-
         self.verticalLayout_32.setSpacing(11)
         self.verticalLayout_32.setContentsMargins(9,6,9,6)
 
@@ -254,7 +219,15 @@ class CustomProbeBasic(ProbeBasic):
         self.verticalLayout_62.setSpacing(4)
 
         self.lockScreen(self)
-  
+
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+
+        self.machine_zoom_button.clicked.connect(self.zoom5x)
+
         self.unlock_frame = QtWidgets.QFrame(self.settings_tab)
         self.unlock_frame.setGeometry(1110, 550, 530, 60)
 
@@ -350,9 +323,6 @@ class CustomProbeBasic(ProbeBasic):
 
         self.probe_led.setColor(QtGui.QColor(205, 3, 3)) #was 44, 41, 255
 
-        #self.led_button = self.findChild(LEDButton, 'coolant_button')  # Replace 'led_button' with your widget name
-        #self.led_button.setProperty("pinBaseName", _translate("Form", "dust-on-led"))
-
         self.status_spacer_item4 = QtWidgets.QSpacerItem(15, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.status_led_layout.addItem(self.status_spacer_item4)
 
@@ -370,7 +340,7 @@ class CustomProbeBasic(ProbeBasic):
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: self.main_load_gcode_button.setEnabled(True))
 
         self.filesystemtable.rootChanged.connect(lambda: self.main_folder_up_button.setEnabled(False) 
-           if self.filesystemtable.model.rootPath().lower() == '/home/billy/linuxcnc/nc_files/users'
+           if self.filesystemtable.model.rootPath().lower() == '/home/avidcnc/linuxcnc/nc_files/users'
            else self.main_folder_up_button.setEnabled(True))
         self.filesystemtable.gcodeFileSelected['bool'].connect(lambda x: (
            self.main_load_gcode_button.setText("SELECT FOLDER") if not x else None,
@@ -397,32 +367,6 @@ class CustomProbeBasic(ProbeBasic):
         self.label_51.setGeometry(690,391,171,131)
         self.label_55.setStyleSheet("image: url(:/images/tool_probe_2.png);")
         self.label_55.setGeometry(690,320,171,131)
-
-        self.vtk_model_button = VCPSettingsPushButton(self.sb_page_3)
-        sizePolicy.setHeightForWidth(self.vtk_model_button.sizePolicy().hasHeightForWidth())
-        self.vtk_model_button.setSizePolicy(sizePolicy)
-        self.vtk_model_button.setMinimumSize(QtCore.QSize(0, 40))
-        self.vtk_model_button.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.vtk_model_button.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.vtk_model_button.setObjectName("vtk_model_button")
-        #self.verticalLayout_40.addWidget(self.vtk_model_button)
-        self.verticalLayout_40.insertWidget(self.verticalLayout_40.indexOf(self.widget_101), self.vtk_model_button)
-        self.vtk_model_button.setText(_translate("Form", "MCH MODEL"))
-        self.vtk_model_button.setProperty("settingName", _translate("Form", "backplot.show-machine-model"))
-
-        self.auto_zoom_button = HalButton(self.vtk_control_buttons)
-        sizePolicy.setHeightForWidth(self.auto_zoom_button.sizePolicy().hasHeightForWidth())
-        self.auto_zoom_button.setSizePolicy(sizePolicy)
-        #self.auto_zoom_button.setMinimumSize(QtCore.QSize(78, 36))
-        self.auto_zoom_button.setMinimumSize(QtCore.QSize(75, 33))
-        self.auto_zoom_button.setMaximumSize(QtCore.QSize(75, 33))
-        self.auto_zoom_button.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.auto_zoom_button.setStyleSheet("")
-        self.auto_zoom_button.setCheckable(True)
-        self.auto_zoom_button.setText(_translate("Form", "FOLLOW"))
-        self.auto_zoom_button.setProperty("pinBaseName", "enable-auto-zoom")
-        self.auto_zoom_button.setStyleSheet("HalButton {\ncolor: white;\nborder-color: rgb(74, 77, 81);\nborder-style: solid;\nborder-radius: 5px;\nborder-width: 1px;\nbackground: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255),stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));\n}\n\nHalButton {\n    font-family: \"Bebas Kai\";\n    font-size: 14pt;\n}\n\nHalButton:disabled {\n    border-color: gray;\n}\n\nHalButton:hover {\n    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 \#A19E9E, stop: 1.0 \#5C5959);\n}\n\nHalButton:pressed {\n    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));\n}\n\nHalButton:checked[option=\"true\"] {\n    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));\n}\n\nHalButton:checked {\n    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));\n}")
-        self.verticalLayout_8.addWidget(self.auto_zoom_button)
 
     def remove_browse_option(self):
         for index in range(self.recentfilecombobox.count()):
@@ -514,23 +458,10 @@ class CustomProbeBasic(ProbeBasic):
         self.mdi_entry_box_5.show()
         self.mdi_entry_box_6.show()
 
-    def tool_touch_off(self):
-        self.AlignToolDialog.lblToolRemark.setText('The current tool\'s diameter necessitates proper\nalignment. Please rotate the tool to position one\nof its teeth over the tool setter. Once aligned,\nclick the button below to continue the touch\noff operation.')
-        self.AlignToolDialog.actionbutton.setText('ONCE TOOL IS ALIGNED - PRESS TO RESUME')
-        self.AlignToolDialog.label_1.setText('Tool Alignment Needed')
-        self.AlignToolDialog.setWindowTitle('Tool Alignment Needed')
-        self.AlignToolDialog.show()
-
-    def tool_breakage(self):
-        self.AlignToolDialog.lblToolRemark.setText('The current tool might be broken, or the incorrect\n tool is installed.  Please double check the tool\nand replace if necessary.')
-        self.AlignToolDialog.actionbutton.setText('ONCE TOOL IS REINSTALLED - PRESS TO REPROBE')
-        self.AlignToolDialog.label_1.setText('Broken or Wrong Tool')
-        self.AlignToolDialog.setWindowTitle('Broken or Wrong Tool')
-        self.AlignToolDialog.show()
-
-    def resume_feed(self):
-        self.ResumeDialog.show()
-
-#    def m1_resume_feed(self):
-#        if self.status.stat.optional_stop:
-#            self.ResumeDialog.show()
+    def zoom5x(self, *args, **kwargs):
+        self.vtk.setViewMachine
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()
+        self.zoom_in_button.click()

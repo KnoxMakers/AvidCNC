@@ -1,11 +1,36 @@
 # Halshow settings
 # This file is generated automatically.
-wm geometry . 860x712+172+105
-placeFrames 0.28891509433962265
-set ::ratio 0.28891509433962265
-set ::old_w_leftf 160
+wm geometry . 1048x565+675+17
+placeFrames 0.272108843537415
+set ::ratio 0.272108843537415
+set ::old_w_leftf 494
 set ::watchlist {
-    pin+motion.analog-out-00
+    pin+qtpyvcp.xmax
+    pin+qtpyvcp.xmin
+    pin+qtpyvcp.ymax
+    pin+qtpyvcp.ymin
+    pin+status_light.amber
+    pin+status_light.blue
+    pin+status_light.buzzer
+    pin+status_light.green
+    pin+status_light.red
+    pin+status_light.dust
+    pin+status_light.test
+    pin+motion.homing-inhibit
+    pin+motion.feed-inhibit
+    sig+tool-number
+    pin+halui.tool.number
+    pin+iocontrol.0.tool-number
+    pin+qtpyvcp.halledindicator.on
+    pin+qtpyvcp.halledindicator.flash
+    pin+qtpyvcp.halledindicator.flash-rate
+    pin+u32bit.tool.in
+    pin+u32bit.tool.out
+    pin+u32bit.tool.out-of-range
+    pin+qtpyvcp.auto-zoom.io
+    pin+qtpyvcp.auto-zoom.out
+    pin+qtpyvcp.auto-zoom.checked
+    pin+qtpyvcp.auto-zoom.enable
 }
 set ::workmode watchhal
 set ::watchInterval 100
