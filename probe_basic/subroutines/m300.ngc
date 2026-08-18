@@ -1,0 +1,12 @@
+o<m300> sub
+ (DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
+ M73
+ G20
+ G90
+ (AXIS,hide)
+ G53 G0 Z0
+ G53 G0 X#<_ini[AXIS_X]MAX_LIMIT> Y#<_ini[AXIS_Y]MAX_LIMIT_ADJUSTED>
+ (AXIS,show)
+o<m300> endsub
+
+M2

@@ -8,7 +8,12 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
     kwargs:
-        columns: TXYZDR
+      columns: TZDR
+
+  offsettable:
+    provider: qtpyvcp.plugins.offset_table:OffsetTable
+    kwargs:
+      columns: "XYZACR"
 
 settings:
 
@@ -37,10 +42,6 @@ settings:
 
   backplot.perspective-view:
     default_value: false
-
-  backplot.view:
-    default_value: P
-    options: ["X: Front View", "XZ: Lathe View", "XZ2: Lathe View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "P: Isometric"]
 
   backplot.multitool-colors:
     default_value: True

@@ -1,0 +1,411 @@
+loadrt time
+addf time.0 servo-thread
+
+net cycle-seconds qtpyvcp.timerseconds.in <= time.0.seconds
+net cycle-minutes qtpyvcp.timerminutes.in <= time.0.minutes
+net cycle-hours qtpyvcp.timerhours.in <= time.0.hours
+# *** Time items required for Probe Basic to run ***
+
+#  ---manual tool change signals---
+#net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+#net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+#net tool-number             =>  qtpyvcp_manualtoolchange.number
+
+# *** Probe graphic simulation trigger push probe tip ***
+#net probe-in  =>  qtpyvcp.probe-in.out
+net probe-in =>  qtpyvcp.probe-led.on
+
+# *** Set line below for actual spindle readout from your hal file ***
+#net spindle-rpm-filtered scale_to_rpm.out  =>  qtpyvcp.spindle-encoder-rpm.in
+
+# *** set below for the status leds ***
+#net enter-hal-input-name-here  <=  qtpyvcp.1in1.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in2.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in3.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in4.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in5.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in6.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in7.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in8.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in9.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in10.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in11.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in12.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in13.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in14.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in15.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in16.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in17.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in18.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in19.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in20.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in21.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in22.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in23.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in24.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in25.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in26.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in27.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in28.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in29.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in30.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in31.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.1in32.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in1.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in2.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in3.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in4.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in5.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in6.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in7.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in8.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in9.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in10.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in11.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in12.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in13.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in14.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in15.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in16.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in17.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in18.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in19.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in20.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in21.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in22.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in23.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in24.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in25.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in26.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in27.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in28.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in29.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in30.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in31.on
+
+#net enter-hal-input-name-here  <=  qtpyvcp.2in32.on
+
+# --- OUTPUTS ---
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out1.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out2.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out3.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out4.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out5.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out6.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out7.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out8.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out9.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out10.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out11.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out12.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out13.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out14.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out15.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.1out16.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out1.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out2.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out3.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out4.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out5.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out6.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out7.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out8.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out9.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out10.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out11.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out12.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out13.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out14.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out15.on
+
+#net enter-hal-output-name-here  =>  qtpyvcp.2out16.on
+
+# *** Pendant mode toggle ***
+
+net cycle-timer time.0.start <= pendant-not.out
+net pendant:is-idle => pendant-not.in => mpg-and2.in0
+net pendant:is-paused => time.0.pause
+net tog_mode xhc-hb04.button-mode => mpg-and2.in1
+net toggle_mod_combined mpg-and2.out => toggle_mode.in 
+#net tog_mode xhc-hb04.button-mode => toggle_mode.in
+net tog_mode_out toggle_mode.out => toggle2nist_mode.in
+net is_mode_mdi_or halui.mode.is-mdi => mpg-mode-or.in0
+net is-auto halui.mode.is-auto => mpg-mode-or.in1
+net is_mode_mdi mpg-mode-or.out => toggle2nist_mode.is-on
+net flip_to_mdi toggle2nist_mode.on => halui.mode.mdi
+net flip_to_manual toggle2nist_mode.off => halui.mode.manual
+
+# *** End Pendant mode toggle ***
+
+# *** Rack ATC Offset ***
+
+setp y-atc-offset.in0 [AXIS_Y]MAX_LIMIT_ADJUSTED
+net y-max-limit-addition motion.analog-out-00 => y-atc-offset.in1
+net y-max-limit-adjusted y-atc-offset.out => ini.y.max_limit
+
+setp z-offset.in0 [AXIS_Z]MIN_LIMIT
+net z-max-limit-addition motion.analog-out-01 => z-offset.in1
+net z-max-limit-adjusted z-offset.out => ini.z.min_limit
+
+# reset to default
+# M68 E00 Q0.0
+# add extra travel on top of [AXIS_Y]MAX_LIMIT
+# M68 E00 Q#<_ini[AXIS_Y]MAX_LIMIT_ADDITIONAL> 
+
+# *** End Rack ATC Offset ***
+
+net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+net tool-number             =>  qtpyvcp_manualtoolchange.number
+        
+#net tool-prep-loop         iocontrol.0.tool-prepare      <=   iocontrol.0.tool-prepared
+
+net spindle-max_rpm  s_interlock.limit halui.tool.length_offset.u
+
+setp qtpyvcp.air-psi-led.flash-rate 250
+net n_air-presure => qtpyvcp.air-psi-led.on
+net n_air-presure => qtpyvcp.air-psi-led.flash
+net tchg-interlock-out => qtpyvcp.drawbar-led.on
+net spindle-load-net => qtpyvcp.spindle-load-indicator.in-f hm2_7i76e.0.7i76.0.0.analogin0
+net spindle-enable => qtpyvcp.case-air-led.on
+setp qtpyvcp.spindle-load-indicator.max-val 135
+
+net tchh-in-unlocked    <= qtpyvcp.lock  => drawbar-lut5.in-1 
+
+net auto-touch-off-net	qtpyvcp.enable-auto-touchoff.checked	motion.digital-in-02
+net auto-zoom-net       qtpyvcp.enable-auto-zoom.checked  motion.digital-in-03
+
+#net is-auto	<= halui.mode.is-auto
+#net hal-is-paused	<= halui.program.is-paused
+
+
+### Amber Light Logic ###
+
+# combine blue not with is-paused - Blue light over-rides amber
+net amber-light-and-blue <= blue-light-not.out
+
+net pendant:is-paused	=> amber-light-and.in0	
+net amber-light-and-blue =>  amber-light-and.in1	
+
+net amber-light-and-motion	<= amber-light-and.out		=> amber-light-mux.sel0
+net amber-light-blink		<= motion.digital-out-03	=> amber-light-mux.sel1
+net n_air-presure	=> amber-light-mux.sel2
+net machine-is-on	=> amber-light-mux.sel3
+
+setp amber-light-mux.in08 0  # !Paused, !Blink, !PSI
+setp amber-light-mux.in09 1  # Paused, !Blink, !PSI 
+setp amber-light-mux.in10 0  # !Paused, Blink, !PSI
+setp amber-light-mux.in11 2  # Paused, Blink, !PSI
+setp amber-light-mux.in12 2  # !Paused, !Blink, PSI 
+setp amber-light-mux.in13 2  # Paused & !Blink, PSI
+setp amber-light-mux.in14 2  # !Paused, Blink,  PSI
+setp amber-light-mux.in15 2  # Paused, Blink, PSI
+
+# Set amber light status
+net amber-light status_light.amber	<= amber-light-mux.out-f	
+
+### End Amber Light Logic ###
+
+### Blue Light Logic ###
+
+# We're auto, not manul or mdi, allow blue light 
+net is-auto => blue-light-mux.sel0
+net red-light-active blue-light-mux.sel1 
+
+# not blue light status for amber
+net blue-light-active => blue-light-not.in
+
+# link blue light to analog-out-04	
+net blue-light-in blue-light-mux.in1	<= motion.analog-out-04 
+
+# Set blue light status
+net blue-light status_light.blue	<= blue-light-mux.out	
+
+### End Blue Light Logic ###
+
+### White Light Logic ###
+
+# Machine is on, enable white light, When in E-Stop, machine is turned off automaticlly.
+net white-light-status  white-light-mux.sel0    motion.digital-out-04
+
+# If amber OR red light is on, supress white light.
+net amber-light-active amber-or-red.in0
+net red-light-active amber-or-red.in1
+net amber-or-red-active amber-or-red.out white-light-mux.sel2
+
+# Set solid/blink from analog-out-5
+setp white-light-mux.in08 1
+
+net white-light-blink	white-light-mux.in10	=> motion.analog-out-05
+net pendant:is-running  => white-light-mux.sel1
+net machine-is-on => white-light-mux.sel3
+
+# Set while light status
+net white-light status_light.white      <= white-light-mux.out-f
+
+### End White Light Logic ###
+
+net buzzer-light status_light.buzzer	<= motion.analog-out-06 
+#net test-light status_light.test	<= motion.analog-out-07
+
+### Green Light Logic ###
+
+# Connect existing nets to abs inputs
+net white-light => abs_white.in
+net amber-light => abs_amber.in
+net blue-light => abs_blue.in
+net red-light => abs_red.in
+
+# Boolean outputs indicating if each light is active (analog > 0)
+net white-light-active abs_white.is-positive
+net amber-light-active abs_amber.is-positive
+net blue-light-active abs_blue.is-positive
+net red-light-active abs_red.is-positive
+
+# Connect abs outputs to LUT5 inputs
+net white-light-active => any_light_lut.in-0
+net amber-light-active => any_light_lut.in-1
+net blue-light-active => any_light_lut.in-2
+net red-light-active => any_light_lut.in-3
+
+# Green light should only be active when no higher-priority lights are active
+
+net green-light status_light.green	<= green-light-mux.out
+setp green-light-mux.in5 1
+setp green-light-mux.in7 2
+
+net green-light-any-other green-light-mux.sel2 <= any_light_lut.out
+net pendant:is-running => green-light-mux.sel1
+
+net machine-is-on green-light-mux.sel0
+
+### End Green Light Logic ###
+
+### Red Light Logic ###
+loadrt logic count=1 personality=0x206  # 6 inputs with OR output
+addf logic.0 servo-thread               # Add it to the servo thread
+
+# Connect your signals to the inputs
+net spindle-fault => logic.0.in-00		# vfd
+net x-servo-fault-out => logic.0.in-01		# servo fault
+net y-servo-fault-out => logic.0.in-02		# y amp
+net y2-servo-fault-out => logic.0.in-03		# y2 amp
+net z-servo-fault-out => logic.0.in-04		# z amp
+#net sig6 => logic.0.in-05	# a amp
+
+# Connect the OR output to your desired signal
+net estop-crit <= logic.0.or
+
+net machine-is-on machine-reset.in
+setp machine-reset.in-edge 0
+
+net reset-signal machine-reset.out => fault-latch.reset
+net estop-crit fault-latch.clk
+net estop-crit fault-latch.data
+
+setp red-light-mux.in0 0	# !E-Stop, !estop-crit
+setp red-light-mux.in1 1	# E-Stop, !estop-crit
+setp red-light-mux.in2 2	# !E-Stop, estop-crit
+setp red-light-mux.in3 2	# E-Stop, estop-crit
+
+net red-light status_light.red	=> red-light-mux.out 
+
+net estop-is-activated	halui.estop.is-activated => red-light-mux.sel0
+net fault-latch-out	fault-latch.out	=> red-light-mux.sel1 
+### End Red Light Logic ###
+
+net dust-collector-on qtpyvcp.halledindicator.on
+net coolant-flood qtpyvcp.haldust.checked  motion.digital-in-05

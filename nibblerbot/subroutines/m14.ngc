@@ -1,0 +1,60 @@
+o<m14> sub
+
+; Unloads the rack
+(PRINT, o<m14>)
+M64 P6
+M65 P6
+M5 S0
+#<number_of_pockets> = 12
+o110 if [EXISTS[#<_ini[atc]numpockets>]]
+    #<number_of_pockets> = #<_ini[atc]numpockets>
+o110 endif
+
+#1 = 0
+#3993 = 1 ; Inhibit touch-off
+o115 if [#5400 GT 0]
+    #3992 = 1
+    T0 M6
+    #3992 = 1
+    M66 P4 L0
+    o125 while [#5399 NE 1]
+        T0 M6
+        M66 P4 L0
+    o125 endwhile
+    M64 P6
+    M65 P6
+o115 endif
+o120 while [#1 LT #<number_of_pockets>]
+    #1 = [#1+1]
+    #2 = #[4000+#1]
+    o130 if [#2 GT 0]
+        #3992 = 1
+        T#2 M6
+        #3992 = 1
+        M66 P4 L0
+        o135 while [#5399 NE 1]
+            T0 M6
+            M66 P4 L0
+        o135 endwhile
+        M64 P6
+        M65 P6
+    o130 endif
+     #[4000 + #1] = 0 ; clear the pocket
+o120 endwhile
+o140 if [#5400 GT 0]
+    #3992 = 1
+    T#2 M6
+    #3992 = 1
+    M66 P4 L0
+    o145 while [#5399 NE 1]
+        T0 M6
+        M66 P4 L0
+    o145 endwhile
+    M64 P6
+    M65 P6
+o140 endif
+#3993 = 0 ; Permit touch-off
+(PRINT, o<m14> endsub)
+o<m14> endsub [1]
+
+M2

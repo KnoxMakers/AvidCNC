@@ -1,0 +1,8 @@
+o<m208> sub
+
+; Clear a tool from specifid pocket
+(PRINT, o<m208>)
+(DEBUG, EVAL[vcp.getWidget{"haldust"}.setChecked{1}])
+o<m208> endsub [1]
+
+M2

@@ -1,0 +1,37 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 816x602+988+35
+placeFrames 0.3656716417910448
+set ::ratio 0.3656716417910448
+set ::old_w_leftf 294
+set ::watchlist {
+    pin+probe-or.in0
+    pin+probe-or.in1
+    pin+probe-or.out
+    pin+spindle.0.speed-in
+    pin+spindle.0.speed-out
+    pin+hm2_7i76e.0.7i76.0.0.spinout
+    pin+hm2_7i76e.0.7i76.0.0.spinena
+    pin+hm2_7i76e.0.7i76.0.0.spindir
+    sig+interlock-spindle-output
+    sig+spindle-output
+    sig+spindle-revs
+    sig+spindle-vel-cmd-rpm
+    sig+spindle-vel-cmd-rpm-abs
+    pin+s_interlock.spindle-enable-in
+    pin+s_interlock.spindle-enable-out
+    pin+s_interlock.spindle-speed-in
+    pin+s_interlock.spindle-speed-out
+    pin+s_interlock.time
+    pin+s_interlock.timer
+    pin+s_interlock.limit
+    pin+s_interlock.encoder-counts
+    pin+spindle.0.at-speed
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 1
+set ::autoSaveWatchlist 1

@@ -1,10 +1,11 @@
 o<go_to_g30> sub
-
+(DEBUG, EVAL[vcp.getWidget{"vtk"}.setViewMachine{}])
 M73
 G90
 G53 G0 Z0
 G30
-
+; Set 5000 = 2 to tell system to always goto x0/y0
+#5000=2 
 o<go_to_g30> endsub
 
 M2

@@ -1,0 +1,34 @@
+T10  P0   D+0.500000 Z+3.044292 ; 1/2" 90 V-Groove Bit 0.2500 loc 1.875 oal
+T11  P0   D+0.500000 Z+3.055708 ; 1/2" 60 V-Groove Bit 0.4375 loc 2.000 oal
+T12  P0   D+0.250000 Z+2.994458 ; 1/4" 60 V-Groove Bit 0.2160 loc 2.000 oal
+T13  P0   D+1.500000 ; 1-1/2" 150 V-Groove Bit 0.2000 loc 1.800 oal
+T14  P0   D+1.000000 ; 1" 120 V-Groove Bit 0.2880 loc 1.800 oal
+T20  P0   D+0.187500 Z+3.217125 ; 3/16" 2 Flute Spiral Upcut 0.7500 loc 2.5000 oal
+T21  P0   D+0.250000 Z+3.173542 ; 1/4" 2 Flute Upcut End Mill 0.7500 loc 2.500 oal
+T22  P0   D+0.250000 Z+3.037792 ; 1/4" O Flute Upcut 0.750 loc 2.500 oal
+T23  P0   D+0.250000 Z+3.748625 ; 1/4" 3 Flute Roughing Upcut ZrCN 1.500 loc 3.000 oal
+T30  P0   D+0.187500 Z+3.218792 ; 3/16" 2 Flute Spiral Down Cut 0.7500 loc 2.5000 oal
+T31  P0   D+0.250000 Z+3.300458 ; 1/4" 2 Flute Spiral Down Cut 1.000 loc 2.500 oal
+T32  P0   D+0.500000 Z+3.585458 ; 1/2" 2FL Spiral Down Cut TAC 1.250 loc 3.000 oal
+T40  P0   D+0.250000 Z+3.375958 ; 1/4" 2 Flute COMP End Mill 1.000 loc 2.500 oal
+T41  P0   D+0.250000 Z+3.314625 ; 1/4" 2FL COMP End Mill ASTRA 1.000 loc 2.500 oal
+T42  P0   D+0.500000 Z+4.020792 ; 1/2" 2FL COMP End Mill NACRO 1.500 loc 4.000 oal
+T43  P0   D+0.500000 Z+3.606542 ; 1/2" 2FL COMP End Mill TAC 1.250 loc 3.000 oal
+T50  P0   D+0.250000 Z+3.093458 ; 1/4" 2 Flute Upcut Ball Nose Mill 0.7500 loc 2.500 oal
+T51  P0   D+0.250000 Z+3.405708 ; 1/4" 2 Flute Ball Nose Downcut 1.000 loc 2.500 oal
+T52  P0   D+0.125000 Z+3.408042 ; 1/8" 4 Flute Tapered Ball Nose 0.8750 loc 2.500 oal
+T53  P0   D+0.090000 ; .090" 2 Flute Tapered Ball Nose 0.7500 loc 2.200 oal
+T54  P0   D+0.030000 ; .030" 2 Flute Tapered Ball Nose 0.7500 loc 2.200 oal
+T60  P0   D+2.000000 Z+2.636875 U+12000.000000 ; 2" 4 Flute Carbide Spoil Board Bit
+T61  P0   D+2.000000 Z+2.976292 U+16000.000000 ; 2" 3 Flute Carbide Insert Spoil Board Bit
+T70  P0   D+1.250000 Z+2.955458 U+18000.000000 ; 1-1/4" Bowl & Tray Bit 0.500 loc 2.250 oal
+T71  P0   D+0.750000 Z+2.973375 ; 3/4" Bowl & Tray Bit 0.625 loc 2.375 oal
+T72  P0   D+1.000000 ; 1" Bowl & Tray Bit 0.750 loc 2.000 oal
+T80  P0   D+0.750000 Z+3.203542 U+18000.000000 ; 3/4" Point Roundover, 3/8" R 0.625 loc 2.250 oal
+T81  P0   D+0.500000 Z+3.028042 ; 1/2" Point Roundover, 1/4" R 0.500 loc 2.000 oal
+T82  P0   D+0.250000 Z+2.736292 ; 1/4" Point Roundover, 1/8" R 0.300 loc 1.900 oal
+T99  P0   D+0.078700 Z+3.681700 U-1.000000 ; Wired Touch Probe
+T100 P0   D+1.500000 Z+0.000042 ; Spindle Nose
+T101 P0   D+0.125000 Z+3.209042 ; 1/8" Carbide Drill bit
+T102 P0   D+0.196900 Z+3.147125 ; 5mm Brad Point Boring Bit
+T103 P0   D+0.250000 Z+3.136375 ; 1/4" Brad Point Boring Bit
